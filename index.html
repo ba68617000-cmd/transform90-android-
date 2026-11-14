@@ -2,1933 +2,899 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>منصة التحوّل الشامل — تبطيل وتعلّم (90 يوماً)</title>
-
-  <!-- PWA & Mobile App Meta Tags -->
-  <meta name="theme-color" content="#0d9488" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="التحوّل 90" />
-  <link id="dynamicManifestLink" rel="manifest" />
-  <link id="appleTouchIconLink" rel="apple-touch-icon" />
-
-  <!-- Google Fonts: Cairo & Tajawal -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
-
-  <!-- Tailwind CSS via CDN -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>مخطط الـ 90 يوماً — الخمس مراحل المطوّر</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            cairo: ['Cairo', 'Tajawal', 'sans-serif'],
-            tajawal: ['Tajawal', 'Cairo', 'sans-serif'],
-          },
-          colors: {
-            slateDeep: '#0f172a',
-            tealPrimary: '#0d9488',
-            emeraldWin: '#10b981',
-            goldXp: '#f59e0b',
-            coralSos: '#f43f5e',
-            cardLight: '#f8fafc',
-          }
-        }
-      }
-    }
-  </script>
-
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-    * {
-      font-family: 'Cairo', 'Tajawal', sans-serif;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      background-color: #f1f5f9;
-      color: #0f172a;
-      overflow-x: hidden;
-    }
-
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar {
-      width: 7px;
-      height: 7px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #e2e8f0;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #0d9488;
-      border-radius: 9999px;
-    }
-
-    /* Scrollable Top Header Styling (position: relative, NOT sticky/fixed) */
-    .top-hero-banner {
-      position: relative;
-      background: radial-gradient(circle at 12% 18%, rgba(13, 148, 136, 0.35), transparent 45%),
-                  radial-gradient(circle at 88% 85%, rgba(245, 158, 11, 0.22), transparent 42%),
-                  linear-gradient(135deg, #0f172a 0%, #13253a 55%, #0f292e 100%);
-    }
-
-    /* Floating SOS Button Subtle Pulse */
-    @keyframes sosCoralPulse {
-      0%, 100% {
-        box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.65), 0 10px 24px -4px rgba(244, 63, 94, 0.45);
-      }
-      50% {
-        box-shadow: 0 0 0 11px rgba(244, 63, 94, 0), 0 12px 28px -2px rgba(244, 63, 94, 0.6);
-      }
-    }
-    .sos-float-btn {
-      position: fixed;
-      bottom: 18px;
-      left: 18px;
-      z-index: 40;
-      animation: sosCoralPulse 2.3s infinite;
-    }
-
-    /* SVG Spin Wheel Smooth Physics */
-    .wheel-rotator {
-      transition: transform 4.2s cubic-bezier(0.15, 0.85, 0.22, 1);
-      transform-origin: 150px 150px;
-    }
-
-    /* 4-7-8 Breathing Circle Transition */
-    .breathing-orb {
-      transition: transform 1s ease-in-out, background-color 0.8s ease, box-shadow 0.8s ease;
-    }
-
-    /* Progress Ring Smooth Animation */
-    .progress-ring-circle {
-      transition: stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-      transform: rotate(-90deg);
-      transform-origin: 50% 50%;
-    }
-
-    /* Toast Entrance */
-    @keyframes slideToast {
-      from {
-        opacity: 0;
-        transform: translateY(14px) scale(0.97);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-    .toast-enter {
-      animation: slideToast 0.25s ease forwards;
-    }
-
-    /* Print / PDF Report Stylesheet */
-    .print-only {
-      display: none;
-    }
-
+    * { font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: #0b1120; color: #f8fafc; overflow-x: hidden; }
+    .stage-card { transition: all 0.25s ease; }
+    .step-done { background: rgba(16, 185, 129, 0.14) !important; border-color: rgba(16, 185, 129, 0.5) !important; }
+    .step-fail { background: rgba(239, 68, 68, 0.14) !important; border-color: rgba(239, 68, 68, 0.5) !important; }
     @media print {
-      @page {
-        size: A4 portrait;
-        margin: 10mm;
-      }
-      body {
-        background: #ffffff !important;
-        color: #0f172a !important;
-        padding-bottom: 0 !important;
-      }
-      .no-print, .sos-float-btn {
-        display: none !important;
-      }
-      .print-only {
-        display: block !important;
-      }
-      .top-hero-banner {
-        background: #0f172a !important;
-        color: #ffffff !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-      .print-card {
-        background: #ffffff !important;
-        border: 1px solid #cbd5e1 !important;
-        box-shadow: none !important;
-        break-inside: avoid;
-        page-break-inside: avoid;
-      }
+      body { background: #fff !important; color: #000 !important; }
+      .no-print { display: none !important; }
+      .print-only { display: block !important; }
     }
   </style>
 </head>
-<body class="min-h-screen pb-24 selection:bg-tealPrimary selection:text-white">
+<body class="min-h-screen pb-28">
 
-  <!-- Full-Screen Confetti Celebration Canvas -->
-  <canvas id="confettiCanvas" class="no-print fixed inset-0 pointer-events-none z-50"></canvas>
-
-  <!-- ========================================================= -->
-  <!-- 1. SCROLLABLE TOP HEADER (position: relative, NOT sticky) -->
-  <!-- ========================================================= -->
-  <header class="top-hero-banner text-white border-b border-slate-800 shadow-lg">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-5 space-y-4">
-      
-      <!-- Top Row: Title, Day Stepper, Sound Toggle, Settings & PDF -->
-      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3.5">
-        
-        <!-- Brand Identity -->
-        <div class="flex items-center gap-3.5">
-          <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-tealPrimary to-emeraldWin flex items-center justify-center text-2xl sm:text-3xl shadow-lg shadow-teal-950/60 shrink-0 border border-teal-300/30">
-            🚀
-          </div>
-          <div>
-            <div class="flex flex-wrap items-center gap-2">
-              <h1 class="text-lg sm:text-xl md:text-2xl font-black tracking-tight text-white">
-                منصة التحوّل الشامل — تبطيل وتعلّم (90 يوماً)
-              </h1>
-              <span id="headerPhaseBadge" class="text-[11px] font-extrabold bg-tealPrimary/25 text-teal-200 border border-teal-400/30 px-2.5 py-0.5 rounded-full">
-                الشهر 1: التطهير وبناء الأساس
-              </span>
-            </div>
-            <p class="text-xs sm:text-sm text-slate-300 font-tajawal mt-0.5">
-              كذا خطة • كذا شكل للتنفيذ • بهاريز تحفيزية يومية • جاهزة للتثبيت على الموبايل
-            </p>
-          </div>
+  <!-- Top Header -->
+  <header class="sticky top-0 z-30 bg-slate-900/95 backdrop-blur border-b border-slate-800 px-4 py-3 no-print">
+    <div class="max-w-xl mx-auto flex items-center justify-between">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="text-xl">🚀</span>
+          <h1 class="text-base font-extrabold text-emerald-400">مخطط الـ 90 يوماً</h1>
         </div>
-
-        <!-- Controls: Day Stepper, Sound Toggle, Settings, PDF -->
-        <div class="no-print flex flex-wrap items-center gap-2">
-          <!-- Day Stepper -->
-          <div class="flex items-center bg-slate-900/90 border border-slate-700 rounded-2xl p-1">
-            <button type="button" id="prevDayBtn" class="px-3 py-1.5 rounded-xl hover:bg-slate-800 text-slate-200 text-xs font-black transition cursor-pointer" title="اليوم السابق">
-              ➡️
-            </button>
-            <div class="px-3 text-center">
-              <span class="text-xs sm:text-sm font-black text-emeraldWin">اليوم <span id="headerDayNum">1</span></span>
-              <span class="text-[11px] font-bold text-slate-400">/ 90</span>
-            </div>
-            <button type="button" id="nextDayBtn" class="px-3 py-1.5 rounded-xl hover:bg-slate-800 text-slate-200 text-xs font-black transition cursor-pointer" title="اليوم التالي">
-              ⬅️
-            </button>
-          </div>
-
-          <!-- Mute / Unmute Sound Effects -->
-          <button type="button" id="toggleSoundBtn" class="bg-slate-800/90 hover:bg-slate-700 text-amber-300 font-extrabold text-xs px-3 py-2.5 rounded-2xl border border-slate-700 transition flex items-center gap-1 cursor-pointer" title="تشغيل/كتم المؤثرات الصوتية">
-            <span id="soundIcon">🔊</span>
-            <span class="hidden sm:inline" id="soundLabel">الصوت</span>
-          </button>
-
-          <!-- Settings Button -->
-          <button type="button" id="openSettingsBtn" class="bg-slate-800 hover:bg-slate-700 active:scale-95 text-white font-extrabold text-xs sm:text-sm px-3.5 py-2.5 rounded-2xl border border-slate-600 shadow transition flex items-center gap-1.5 cursor-pointer">
-            <span>⚙️</span>
-            <span>الإعدادات</span>
-          </button>
-
-          <!-- PDF Report Button -->
-          <button type="button" id="exportPdfBtn" class="bg-goldXp hover:bg-amber-400 active:scale-95 text-slateDeep font-black text-xs sm:text-sm px-3.5 py-2.5 rounded-2xl shadow transition flex items-center gap-1.5 cursor-pointer">
-            <span>📄</span>
-            <span>تقرير PDF</span>
-          </button>
-        </div>
+        <p class="text-[11px] text-slate-400">الخمس مراحل • تجميع ونقل تلقائي</p>
       </div>
-
-      <!-- Rank & XP Progress Bar -->
-      <div class="bg-slate-900/80 border border-slate-700/80 rounded-2xl px-4 py-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-        <div class="flex flex-wrap items-center gap-2.5">
-          <span class="text-xs font-black bg-amber-500/20 text-amber-300 border border-amber-400/30 px-2.5 py-1 rounded-xl flex items-center gap-1">
-            <span>🎖️</span>
-            <span id="headerRankTitle">مبتدئ التحوّل</span>
-          </span>
-          <span class="text-xs font-bold text-slate-200">
-            الرصيد: <strong id="headerTotalXp" class="text-goldXp">0</strong> XP
-          </span>
-          <span class="hidden md:inline text-slate-600">|</span>
-          <span class="hidden md:inline text-xs text-slate-300">
-            المسارات المفعّلة: <strong id="headerActiveTracksCount" class="text-emeraldWin">7</strong> مسارات
-          </span>
-        </div>
-
-        <div class="flex items-center gap-3 flex-1 max-w-md">
-          <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden border border-slate-700">
-            <div id="headerXpBar" class="bg-gradient-to-l from-goldXp via-emeraldWin to-tealPrimary h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-          </div>
-          <span id="headerNextRankText" class="text-[11px] font-bold text-slate-300 whitespace-nowrap">
-            0 / 500 XP
-          </span>
-        </div>
+      <div class="flex items-center gap-2">
+        <button onclick="openSettings()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold px-3 py-2 rounded-xl border border-slate-700 flex items-center gap-1">
+          <span>⚙️</span><span>الإعدادات</span>
+        </button>
       </div>
+    </div>
 
-      <!-- Primary 4 Navigation Tabs -->
-      <nav class="no-print grid grid-cols-2 sm:grid-cols-4 gap-2 pt-0.5" aria-label="التنقل الرئيسي">
-        <button type="button" data-tab="cockpit" id="tabBtn-cockpit" class="nav-tab py-2.5 px-3 rounded-xl text-xs sm:text-sm font-black bg-tealPrimary text-white shadow-md flex items-center justify-center gap-1.5 transition cursor-pointer">
-          <span>🎯</span>
-          <span>غرفة القيادة اليومية</span>
-        </button>
-        <button type="button" data-tab="library" id="tabBtn-library" class="nav-tab py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold bg-slate-900/90 text-slate-300 border border-slate-700/80 hover:border-tealPrimary/60 flex items-center justify-center gap-1.5 transition cursor-pointer">
-          <span>🗂️</span>
-          <span>مكتبة الخطط والمسارات</span>
-        </button>
-        <button type="button" data-tab="roadmap" id="tabBtn-roadmap" class="nav-tab py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold bg-slate-900/90 text-slate-300 border border-slate-700/80 hover:border-tealPrimary/60 flex items-center justify-center gap-1.5 transition cursor-pointer">
-          <span>🗺️</span>
-          <span>خريطة الـ 90 يوم</span>
-        </button>
-        <button type="button" data-tab="recovery" id="tabBtn-recovery" class="nav-tab py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold bg-slate-900/90 text-slate-300 border border-slate-700/80 hover:border-tealPrimary/60 flex items-center justify-center gap-1.5 transition cursor-pointer">
-          <span>🧬</span>
-          <span>الاستشفاء والشارات</span>
-        </button>
-      </nav>
+    <!-- Stats Bar -->
+    <div class="max-w-xl mx-auto mt-3 grid grid-cols-3 gap-2 text-center">
+      <div class="bg-slate-800/80 border border-slate-700/70 rounded-xl py-1.5 px-2">
+        <div class="text-[10px] text-slate-400">اليوم الحالي</div>
+        <div class="text-sm font-black text-white"><span id="hdrDay">1</span> <span class="text-xs font-normal text-slate-400">/ 90</span></div>
+      </div>
+      <div class="bg-slate-800/80 border border-slate-700/70 rounded-xl py-1.5 px-2">
+        <div class="text-[10px] text-slate-400">رصيد النقاط</div>
+        <div class="text-sm font-black text-amber-400"><span id="hdrPoints">0</span> XP</div>
+      </div>
+      <div class="bg-slate-800/80 border border-slate-700/70 rounded-xl py-1.5 px-2">
+        <div class="text-[10px] text-slate-400">إنجاز اليوم</div>
+        <div class="text-sm font-black text-emerald-400"><span id="hdrTodayPct">0</span>%</div>
+      </div>
+    </div>
 
+    <!-- Tabs -->
+    <div class="max-w-xl mx-auto mt-3 grid grid-cols-2 gap-2 bg-slate-950 p-1 rounded-xl border border-slate-800">
+      <button id="tabDailyBtn" onclick="switchTab('daily')" class="py-1.5 rounded-lg text-xs font-bold bg-emerald-600 text-white transition">📋 مهام اليوم</button>
+      <button id="tabLogBtn" onclick="switchTab('log')" class="py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition">🗓️ سجل الـ 90 يوماً</button>
     </div>
   </header>
 
-  <!-- Print-Only Executive Summary Banner -->
-  <div class="print-only max-w-7xl mx-auto px-4 mt-4">
-    <div class="print-card rounded-xl p-4 space-y-1">
-      <div class="text-lg font-black text-slateDeep">تقرير التقدم والاستشفاء الشامل (90 يوماً) — منصة التحوّل الشامل</div>
-      <div id="printSummaryLine" class="text-xs text-slate-600 font-bold"></div>
-    </div>
-  </div>
+  <!-- Main Content -->
+  <main class="max-w-xl mx-auto px-4 pt-4">
+    <!-- Daily View -->
+    <div id="dailyView" class="space-y-4">
+      <!-- Stages Container -->
+      <div id="stagesContainer" class="space-y-4"></div>
 
-  <!-- ========================================================= -->
-  <!-- MAIN CONTENT CONTAINER                                    -->
-  <!-- ========================================================= -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 mt-6 space-y-6">
-
-    <!-- ======================================================= -->
-    <!-- 4 LIVE KPI DASHBOARD CARDS                              -->
-    <!-- ======================================================= -->
-    <section aria-label="لوحة المؤشرات الحية" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      
-      <!-- KPI 1: Current Streak & Best Streak -->
-      <div class="print-card bg-cardLight border border-slate-200 rounded-3xl p-4 sm:p-5 shadow-sm flex flex-col justify-between space-y-2">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-extrabold text-slate-500">سلسلة الالتزام المتتالية</span>
-          <span class="w-9 h-9 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-lg">🔥</span>
-        </div>
-        <div class="text-2xl sm:text-3xl font-black text-slateDeep">
-          <span id="kpiCurrentStreak">0</span> <span class="text-sm font-bold text-slate-500">يوم</span>
-        </div>
-        <div class="text-[11px] font-bold text-slate-500">
-          أطول سلسلة نجاح: <strong id="kpiBestStreak" class="text-tealPrimary">0 يوم</strong>
-        </div>
-      </div>
-
-      <!-- KPI 2: Clean / Active Days out of 90 -->
-      <div class="print-card bg-cardLight border border-slate-200 rounded-3xl p-4 sm:p-5 shadow-sm flex flex-col justify-between space-y-2">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-extrabold text-slate-500">أيام الإنجاز والتعافي (من 90)</span>
-          <span class="w-9 h-9 rounded-xl bg-emerald-100 text-emeraldWin flex items-center justify-center text-lg">🛡️</span>
-        </div>
-        <div class="flex items-baseline justify-between">
-          <div class="text-2xl sm:text-3xl font-black text-slateDeep">
-            <span id="kpiActiveDays">0</span> <span class="text-sm font-bold text-slate-400">/ 90</span>
-          </div>
-          <span id="kpiActivePct" class="text-xs font-black text-emeraldWin">0%</span>
-        </div>
-        <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
-          <div id="kpiActiveBar" class="bg-gradient-to-l from-tealPrimary to-emeraldWin h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-        </div>
-      </div>
-
-      <!-- KPI 3: Total EGP Saved (Cigarettes + Smart Saving) -->
-      <div class="print-card bg-cardLight border border-slate-200 rounded-3xl p-4 sm:p-5 shadow-sm flex flex-col justify-between space-y-2">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-extrabold text-slate-500">إجمالي التوفير (سجائر + ذكي)</span>
-          <span class="w-9 h-9 rounded-xl bg-amber-100 text-goldXp flex items-center justify-center text-lg">💰</span>
-        </div>
-        <div class="text-2xl sm:text-3xl font-black text-amber-600">
-          <span id="kpiTotalSavedEgp">0</span> <span class="text-sm font-bold">ج.م</span>
-        </div>
-        <div class="text-[11px] font-bold text-tealPrimary truncate" id="kpiSavedBreakdown">
-          تجنبت 0 سيجارة حتى الآن
-        </div>
-      </div>
-
-      <!-- KPI 4: Current Rank / Level + XP Progress -->
-      <div class="print-card bg-cardLight border border-slate-200 rounded-3xl p-4 sm:p-5 shadow-sm flex flex-col justify-between space-y-2">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-extrabold text-slate-500">الرتبة الحالية والمستوى</span>
-          <span class="w-9 h-9 rounded-xl bg-teal-100 text-tealPrimary flex items-center justify-center text-lg">🏆</span>
-        </div>
-        <div class="flex items-baseline justify-between">
-          <span id="kpiRankTitle" class="text-lg sm:text-xl font-black text-slateDeep">مبتدئ التحوّل</span>
-          <span class="text-xs font-black text-goldXp"><span id="kpiXpVal">0</span> XP</span>
-        </div>
-        <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
-          <div id="kpiRankBar" class="bg-gradient-to-l from-goldXp to-amber-400 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-        </div>
-      </div>
-
-    </section>
-
-    <!-- ======================================================= -->
-    <!-- TAB 1: TODAY'S COCKPIT (غرفة القيادة اليومية)           -->
-    <!-- ======================================================= -->
-    <section id="tabPanel-cockpit" class="space-y-6">
-
-      <!-- 1. THREE EXECUTION MODES SWITCHER ("اختر شكل تنفيذ يومك") -->
-      <div class="no-print print-card bg-cardLight border border-slate-200 rounded-3xl p-4 sm:p-5 shadow-sm space-y-3">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-          <div>
-            <h2 class="text-base sm:text-lg font-black text-slateDeep flex items-center gap-2">
-              <span>🎛️</span>
-              <span>اختر شكل تنفيذ يومك (حسب طاقتك ووقتك اليوم)</span>
-            </h2>
-            <p class="text-xs text-slate-500 font-tajawal">
-              بدّل بضغطة واحدة بين الوضع الخفيف للأيام المضغوطة، أو المتكامل، أو التدريجي الذكي دون كسر سلسلتك!
-            </p>
-          </div>
-          <span id="activeModeBadge" class="self-start sm:self-center text-xs font-black bg-tealPrimary/10 text-tealPrimary border border-tealPrimary/30 px-3 py-1 rounded-full">
-            الوضع النشط: المتكامل
-          </span>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <!-- Mode 1: Lite 2-Minute Mode -->
-          <button type="button" data-exec-mode="lite" id="modeBtn-lite"
-                  class="exec-mode-btn text-right p-3.5 rounded-2xl border-2 transition cursor-pointer flex flex-col justify-between space-y-1.5 bg-white border-slate-200 hover:border-amber-400">
-            <div class="flex items-center justify-between w-full">
-              <span class="text-sm font-black text-slateDeep">⚡ الوضع الخفيف (يوم مضغوط)</span>
-              <span class="text-[11px] font-extrabold bg-amber-100 text-amber-700 px-2 py-0.5 rounded-lg">دقيقتين فقط</span>
-            </div>
-            <p class="text-[11px] text-slate-500 leading-relaxed">
-              يقلّص كل عادة لخطوة سريعة في دقيقتين (2د إطالة، جملة إنجليزي، صفحة قراءة) لحماية سلسلتك لما ترجع مهدود 12 بليل.
-            </p>
-          </button>
-
-          <!-- Mode 2: Full Hero Mode -->
-          <button type="button" data-exec-mode="full" id="modeBtn-full"
-                  class="exec-mode-btn text-right p-3.5 rounded-2xl border-2 transition cursor-pointer flex flex-col justify-between space-y-1.5 bg-teal-50/70 border-tealPrimary shadow-sm">
-            <div class="flex items-center justify-between w-full">
-              <span class="text-sm font-black text-slateDeep">🔥 الوضع المتكامل (وضع البطل)</span>
-              <span class="text-[11px] font-extrabold bg-tealPrimary text-white px-2 py-0.5 rounded-lg">أقصى نمو</span>
-            </div>
-            <p class="text-[11px] text-slate-600 leading-relaxed">
-              التارجت الكامل لكل مسار مفعّل لتحقيق أسرع استشفاء جسدي وذهني وأعلى رصيد نقاط XP.
-            </p>
-          </button>
-
-          <!-- Mode 3: Smart Progressive Mode -->
-          <button type="button" data-exec-mode="progressive" id="modeBtn-progressive"
-                  class="exec-mode-btn text-right p-3.5 rounded-2xl border-2 transition cursor-pointer flex flex-col justify-between space-y-1.5 bg-white border-slate-200 hover:border-emeraldWin">
-            <div class="flex items-center justify-between w-full">
-              <span class="text-sm font-black text-slateDeep">📈 الوضع التدريجي الذكي</span>
-              <span class="text-[11px] font-extrabold bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-lg">خطوة بخطوة</span>
-            </div>
-            <p class="text-[11px] text-slate-500 leading-relaxed">
-              يركز على أهم عادتين في أول 14 يوم، ثم يضيف عادتين في أيام 15–30، ويفتح كل المسارات من اليوم 31 بلا ضغط.
-            </p>
-          </button>
-        </div>
-
-        <!-- Progressive Mode Phase Indicator (visible when progressive mode is active) -->
-        <div id="progressivePhaseBanner" class="hidden bg-emerald-50 border border-emerald-200 rounded-2xl px-4 py-2.5 text-xs font-bold text-emerald-900 flex flex-wrap items-center justify-between gap-2">
-          <span id="progressivePhaseText">📈 المرحلة الحالية: التركيز على أهم مسارين أساسيين حتى تثبت أقدامك بدون إرهاق.</span>
-          <span class="text-[11px] text-emerald-700 font-extrabold">يمكنك تفعيل أي مسار آخر من المكتبة في أي وقت</span>
-        </div>
-      </div>
-
-      <!-- 2. DAILY PROGRESS RING & SMART CAPSULE ("كبسولة اليوم الذكية") -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
-        
-        <!-- Left (5 cols): Daily Progress Ring + Mood + Reflection Note -->
-        <div class="lg:col-span-5 print-card bg-cardLight border border-slate-200 rounded-3xl p-5 shadow-sm flex flex-col justify-between space-y-4">
-          <div class="flex items-center gap-4">
-            <div class="relative w-24 h-24 shrink-0 flex items-center justify-center">
-              <svg class="w-full h-full" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="42" stroke="#e2e8f0" stroke-width="9" fill="transparent" />
-                <circle id="dailyProgressRing" class="progress-ring-circle" cx="50" cy="50" r="42" stroke="#0d9488" stroke-width="9" stroke-linecap="round" fill="transparent" stroke-dasharray="263.89" stroke-dashoffset="263.89" />
-              </svg>
-              <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
-                <span id="dailyCompletionPct" class="text-xl font-black text-slateDeep">0%</span>
-                <span class="text-[10px] font-bold text-slate-500">إنجاز اليوم</span>
-              </div>
-            </div>
-
-            <div class="space-y-1">
-              <span id="dailyTracksCountBadge" class="inline-block text-[11px] font-extrabold bg-teal-100 text-tealPrimary px-2.5 py-0.5 rounded-full">
-                0 / 0 مسارات منجزة
-              </span>
-              <h2 id="dailyHeroTitle" class="text-base sm:text-lg font-black text-slateDeep leading-snug">
-                اليوم 1: انطلاقة التحوّل
-              </h2>
-              <div class="text-xs font-bold text-amber-600">
-                ✨ نقاط اليوم: <strong id="dailyXpVal">0</strong> XP <span class="text-slate-400">(+100 XP عند 100%)</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Mood Selector -->
-          <div class="space-y-1.5">
-            <span class="text-xs font-extrabold text-slate-600 block">🌡️ مزاجك وطاقتك اليوم:</span>
-            <div id="dailyMoodRow" class="grid grid-cols-5 gap-1.5">
-              <!-- Rendered dynamically -->
-            </div>
-          </div>
-
-          <!-- Quick Reflection Note -->
-          <div class="space-y-1">
-            <label for="dailyReflectionInput" class="text-xs font-extrabold text-slate-600 block">
-              📝 ملاحظة أو إنجاز سريع لليوم <span id="reflectionDayNum">1</span>:
-            </label>
-            <input id="dailyReflectionInput" type="text"
-                   placeholder="اكتب موقفاً انتصرت فيه أو فكرة تعلمتها اليوم..."
-                   class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-slateDeep focus:outline-none focus:border-tealPrimary" />
-          </div>
-        </div>
-
-        <!-- Right (7 cols): 💊 كبسولة اليوم الذكية (Tactical Tip + English Idiom + Body/Mind Milestone) -->
-        <div class="lg:col-span-7 print-card bg-gradient-to-br from-slateDeep via-slate-900 to-teal-950 text-white rounded-3xl p-5 sm:p-6 shadow-md border border-slate-800 flex flex-col justify-between space-y-4">
-          <div class="flex items-center justify-between gap-2 border-b border-slate-800 pb-3">
-            <div class="flex items-center gap-2">
-              <span class="text-2xl">💊</span>
-              <div>
-                <h3 class="text-base sm:text-lg font-black text-white">كبسولة اليوم الذكية (اليوم <span id="capsuleDayLabel">1</span>)</h3>
-                <p class="text-[11px] text-teal-300 font-tajawal">جرعة مركّزة تجمع التكتيك العملي، الإنجليزية، وعلم التعافي</p>
-              </div>
-            </div>
-            <button type="button" id="jumpFirstIncompleteBtn" class="no-print text-[11px] font-black bg-white/10 hover:bg-white/20 text-amber-300 px-3 py-1.5 rounded-xl transition cursor-pointer">
-              📍 أقرب يوم غير مكتمل
-            </button>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <!-- Box 1: Tactical Tip -->
-            <div class="bg-white/5 border border-white/10 rounded-2xl p-3.5 space-y-1.5">
-              <span class="text-[11px] font-black text-amber-300 flex items-center gap-1">
-                <span>⚡</span>
-                <span>تكتيك اليوم العملي</span>
-              </span>
-              <p id="capsuleTacticalTip" class="text-xs text-slate-200 leading-relaxed font-tajawal">
-                ضع شاحن الموبايل خارج السرير قبل النوم بـ 30 دقيقة؛ هذه الخطوة وحدها تحمي نومك وتركيزك.
-              </p>
-            </div>
-
-            <!-- Box 2: Daily English Phrase -->
-            <div class="bg-tealPrimary/15 border border-teal-400/25 rounded-2xl p-3.5 space-y-1.5">
-              <span class="text-[11px] font-black text-teal-300 flex items-center gap-1">
-                <span>🇬🇧</span>
-                <span>كبسولة إنجليزي اليوم</span>
-              </span>
-              <div id="capsuleEnglishPhrase" class="text-xs font-black text-white dir-ltr text-left" dir="ltr">
-                "Small steps every day lead to massive results."
-              </div>
-              <p id="capsuleEnglishArabic" class="text-[11px] text-emerald-200 leading-snug">
-                الخطوات الصغيرة كل يوم تؤدي إلى نتائج ضخمة.
-              </p>
-            </div>
-
-            <!-- Box 3: Recovery Milestone -->
-            <div class="bg-emeraldWin/10 border border-emerald-400/25 rounded-2xl p-3.5 space-y-1.5">
-              <span class="text-[11px] font-black text-emerald-300 flex items-center gap-1">
-                <span>🧬</span>
-                <span>مؤشر التعافي اليوم</span>
-              </span>
-              <p id="capsuleRecoveryMilestone" class="text-xs text-slate-200 leading-relaxed font-tajawal">
-                يبدأ أول أكسيد الكربون في الدم بالانخفاض، وتبدأ مستقبلات الدوبامين في التهدئة تدريجياً.
-              </p>
-            </div>
-          </div>
-
-          <!-- Perfect Day Banner (Shown at 100%) -->
-          <div id="perfectDayCelebrationBanner" class="hidden bg-gradient-to-l from-amber-500/25 to-emerald-500/25 border border-amber-400/50 rounded-2xl px-4 py-3 flex flex-wrap items-center justify-between gap-2">
-            <div class="flex items-center gap-2.5">
-              <span class="text-2xl">🎉</span>
-              <span class="text-xs sm:text-sm font-black text-amber-200">
-                يوم مثالي 100%! حصلت على مكافأة +100 XP إضافية!
-              </span>
-            </div>
-            <button type="button" id="goNextDayAfterWinBtn" class="no-print bg-goldXp hover:bg-amber-400 text-slateDeep font-black text-xs px-3.5 py-1.5 rounded-xl transition cursor-pointer">
-              اليوم التالي ⬅️
-            </button>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- 3. ACTIVE TRACKS EXECUTION CARDS GRID -->
-      <div class="space-y-3">
-        <div class="flex flex-wrap items-center justify-between gap-2">
-          <h2 class="text-lg sm:text-xl font-black text-slateDeep flex items-center gap-2">
-            <span>📋</span>
-            <span>مساراتك النشطة لليوم (<span id="activeTracksHeaderCount">7</span>)</span>
-          </h2>
-          <button type="button" id="quickOpenLibraryBtn" class="no-print text-xs font-black text-tealPrimary hover:underline flex items-center gap-1 cursor-pointer">
-            <span>🗂️ تفعيل أو إضافة مسارات من المكتبة</span>
-          </button>
-        </div>
-
-        <div id="activeTracksExecutionGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-          <!-- Rendered dynamically based on enabled tracks & selected execution mode -->
-        </div>
-      </div>
-
-      <!-- 4. 🎡 عجلة البهاريز والمكافآت (INTERACTIVE SPIN WHEEL) -->
-      <section class="print-card bg-gradient-to-br from-slateDeep via-slate-900 to-slateDeep text-white rounded-3xl p-5 sm:p-7 shadow-xl border border-slate-800">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-          
-          <!-- Left (5 cols): SVG Spinning Wheel -->
-          <div class="lg:col-span-5 flex flex-col items-center justify-center relative">
-            <div class="relative w-64 h-64 sm:w-72 sm:h-72 flex items-center justify-center">
-              <!-- Top Pointer Arrow -->
-              <div class="absolute -top-3 z-20 text-goldXp drop-shadow-md text-2xl sm:text-3xl select-none">
-                ▼
-              </div>
-              
-              <!-- SVG Wheel -->
-              <svg id="spinWheelSvg" viewBox="0 0 300 300" class="w-full h-full drop-shadow-2xl">
-                <g id="spinWheelRotator" class="wheel-rotator">
-                  <!-- Slices generated dynamically via JS -->
-                </g>
-                <!-- Center Hub -->
-                <circle cx="150" cy="150" r="28" fill="#0f172a" stroke="#f59e0b" stroke-width="4" />
-                <text x="150" y="155" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="900">لفّها</text>
-              </svg>
-            </div>
-
-            <button type="button" id="spinWheelTriggerBtn" class="no-print mt-4 bg-gradient-to-l from-goldXp to-amber-400 hover:from-amber-400 hover:to-amber-300 active:scale-95 text-slateDeep font-black text-sm px-7 py-3 rounded-2xl shadow-lg shadow-amber-500/25 transition flex items-center gap-2 cursor-pointer">
-              <span>🎡</span>
-              <span>لفّ عجلة البهاريز الآن!</span>
-            </button>
-          </div>
-
-          <!-- Right (7 cols): Wheel Description & Current Won Challenge Card -->
-          <div class="lg:col-span-7 space-y-4">
-            <div class="flex flex-wrap items-center justify-between gap-2">
-              <div>
-                <span class="text-xs font-extrabold text-goldXp">✨ بهاريز التحفيز والتجديد</span>
-                <h3 class="text-xl sm:text-2xl font-black text-white mt-0.5">عجلة البهاريز والمكافآت الفورية</h3>
-              </div>
-              <span id="wheelCompletedBadge" class="text-xs font-black bg-emeraldWin/20 text-emerald-300 border border-emerald-400/30 px-3 py-1 rounded-full">
-                مهام العجلة اليوم: 0
-              </span>
-            </div>
-
-            <p class="text-xs sm:text-sm text-slate-300 font-tajawal leading-relaxed">
-              حاسس بملل أو فتور؟ لفّ العجلة وهتطلعلك مهمة تنشيطية سريعة في 3 دقائق أو تحدي إنجليزي أو نقاط خبرة إضافية تكسر الروتين فوراً!
-            </p>
-
-            <!-- Active Wheel Result Card -->
-            <div id="wheelResultCard" class="bg-white/10 border border-white/15 rounded-2xl p-4 sm:p-5 space-y-3">
-              <div class="flex items-start gap-3">
-                <span id="wheelResIcon" class="text-3xl sm:text-4xl">⚡</span>
-                <div class="space-y-1">
-                  <span id="wheelResCategory" class="text-[11px] font-black text-amber-300 bg-amber-500/20 px-2.5 py-0.5 rounded-lg inline-block">
-                    تحدي جاهز للتنفيذ
-                  </span>
-                  <h4 id="wheelResTitle" class="text-base sm:text-lg font-black text-white">
-                    15 عدة ضغط أو إطالة كاملة للجسم (3 دقائق)
-                  </h4>
-                  <p id="wheelResDesc" class="text-xs text-slate-300 leading-relaxed">
-                    تنشط الدورة الدموية وترفع الدوبامين الطبيعي فوراً وتطرد الخمول.
-                  </p>
-                </div>
-              </div>
-
-              <div class="no-print pt-1 flex flex-wrap items-center justify-between gap-2 border-t border-white/10">
-                <span id="wheelResXpHint" class="text-xs font-bold text-emerald-300">المكافأة: +25 XP عند التنفيذ</span>
-                <button type="button" id="claimWheelChallengeBtn" class="bg-emeraldWin hover:bg-emerald-400 text-slateDeep font-black text-xs sm:text-sm px-4 py-2 rounded-xl shadow transition cursor-pointer">
-                  ✅ نفّذت التحدي (+25 XP)
-                </button>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-    </section>
-
-    <!-- ======================================================= -->
-    <!-- TAB 2: MULTI-TRACK LIBRARY ("مكتبة الخطط والمسارات")    -->
-    <!-- ======================================================= -->
-    <section id="tabPanel-library" class="hidden space-y-6">
-      
-      <!-- Library Header + Add Custom Track CTA -->
-      <div class="print-card bg-cardLight border border-slate-200 rounded-3xl p-5 sm:p-6 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h2 class="text-xl sm:text-2xl font-black text-slateDeep">🗂️ مكتبة الخطط والمسارات (تبطيل وتعلّم)</h2>
-          <p class="text-xs sm:text-sm text-slate-600 font-tajawal mt-1">
-            فعّل المسارات التي تناسب أهدافك الآن أو أوقف أي مسار مؤقتاً، ويمكنك إضافة خطتك الخاصة للتبطيل أو التعلّم!
-          </p>
-        </div>
-        <button type="button" id="openCustomTrackModalBtn" class="no-print bg-tealPrimary hover:bg-teal-700 active:scale-95 text-white font-black text-xs sm:text-sm px-5 py-3 rounded-2xl shadow-md flex items-center justify-center gap-2 shrink-0 transition cursor-pointer">
-          <span>➕</span>
-          <span>أضف خطتك الخاصة</span>
+      <!-- End of Day Automatic Transition Button -->
+      <div class="pt-2 pb-6 no-print">
+        <button onclick="finishCurrentDay()" class="w-full py-4 px-5 rounded-2xl bg-gradient-to-l from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-base shadow-lg shadow-emerald-950/60 border border-emerald-400/30 active:scale-[0.99] transition flex items-center justify-center gap-2">
+          <span>🏁</span>
+          <span id="finishDayBtnText">انتهى اليوم 1 — جمّع النقط وانتقل لليوم 2</span>
         </button>
+        <p class="text-center text-[11px] text-slate-400 mt-2">أي خطوة لم تضغط عليها ستُحسب تلقائياً كـ (✕) ويُضاف مجموع اليوم لرصيدك</p>
       </div>
+    </div>
 
-      <!-- Track Categories Container -->
-      <div id="trackLibraryCategoriesContainer" class="space-y-6">
-        <!-- Populated dynamically with Categories A, B, C, and Custom Tracks -->
+    <!-- 90-Day Log View -->
+    <div id="logView" class="hidden space-y-4">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-sm font-extrabold text-white">خريطة تقدمك (90 يوماً)</h2>
+          <button onclick="showFinishModal()" class="text-xs bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2.5 py-1 rounded-lg font-bold">🏆 معاينة شهادة النهاية</button>
+        </div>
+        <div id="daysGrid" class="grid grid-cols-6 gap-2"></div>
       </div>
-
-    </section>
-
-    <!-- ======================================================= -->
-    <!-- TAB 3: INTERACTIVE 90-DAY MAP ("خريطة الـ 90 يوم")       -->
-    <!-- ======================================================= -->
-    <section id="tabPanel-roadmap" class="hidden space-y-6">
-      
-      <!-- 3 Monthly Milestone Overview Cards -->
-      <div id="monthlySummaryCardsGrid" class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <!-- Populated dynamically for Month 1, Month 2, Month 3 -->
-      </div>
-
-      <!-- 90-Day Interactive Grid Card -->
-      <div class="print-card bg-cardLight border border-slate-200 rounded-3xl p-5 sm:p-6 shadow-sm space-y-5">
-        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 border-b border-slate-200 pb-4">
-          <div>
-            <h3 class="text-lg sm:text-xl font-black text-slateDeep">🗺️ خريطة الأيام التفاعلية (1 – 90)</h3>
-            <p class="text-xs text-slate-500 mt-0.5">اضغط على أي يوم لمعاينة تركيزه وملاحظاتك أو الانتقال لتنفيذه مباشرة</p>
-          </div>
-
-          <!-- Month Filter Pills -->
-          <div class="no-print flex flex-wrap items-center gap-1.5">
-            <button type="button" data-rm-filter="all" id="rmFilter-all" class="rm-filter-btn px-3 py-1.5 rounded-xl text-xs font-black bg-tealPrimary text-white cursor-pointer">الكل (90)</button>
-            <button type="button" data-rm-filter="1" id="rmFilter-1" class="rm-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-200 text-slate-700 hover:bg-slate-300 cursor-pointer">الشهر 1 (1–30)</button>
-            <button type="button" data-rm-filter="2" id="rmFilter-2" class="rm-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-200 text-slate-700 hover:bg-slate-300 cursor-pointer">الشهر 2 (31–60)</button>
-            <button type="button" data-rm-filter="3" id="rmFilter-3" class="rm-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-200 text-slate-700 hover:bg-slate-300 cursor-pointer">الشهر 3 (61–90)</button>
-          </div>
-        </div>
-
-        <!-- Legend -->
-        <div class="flex flex-wrap items-center gap-4 text-[11px] font-bold text-slate-600">
-          <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 rounded bg-gradient-to-br from-goldXp to-emeraldWin inline-block"></span> يوم مثالي 100% ⭐</span>
-          <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 rounded bg-emerald-500 inline-block"></span> إنجاز قوي (60%+) ✓</span>
-          <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 rounded bg-teal-100 border border-teal-300 inline-block"></span> بداية إنجاز</span>
-          <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 rounded bg-white border-2 border-slateDeep inline-block"></span> اليوم المحدد حالياً</span>
-        </div>
-
-        <!-- Day Inspector Strip -->
-        <div id="roadmapInspectorBox" class="bg-slate-900 text-white rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div class="space-y-1">
-            <div class="flex items-center gap-2">
-              <span id="inspDayTitle" class="text-sm sm:text-base font-black text-amber-300">اليوم 1</span>
-              <span id="inspDayStatus" class="text-[11px] font-bold bg-white/10 px-2.5 py-0.5 rounded-full">0% مكتمل</span>
-            </div>
-            <p id="inspDayFocus" class="text-xs text-slate-300">تركيز اليوم: كسر الحلقة الأولى وتثبيت روتين ما بعد العمل.</p>
-            <p id="inspDayNote" class="text-[11px] text-emerald-300 italic hidden"></p>
-          </div>
-          <button type="button" id="inspGoToCockpitBtn" class="no-print self-start sm:self-center bg-tealPrimary hover:bg-teal-500 text-white font-black text-xs px-4 py-2.5 rounded-xl shrink-0 transition cursor-pointer">
-            افتح اليوم في غرفة القيادة ⬅️
-          </button>
-        </div>
-
-        <!-- Calendar Grids -->
-        <div id="roadmapCalendarContainer" class="space-y-6">
-          <!-- Populated dynamically -->
-        </div>
-      </div>
-
-    </section>
-
-    <!-- ======================================================= -->
-    <!-- TAB 4: FULL-BODY & MIND RECOVERY + 12 BADGES + JAR      -->
-    <!-- ======================================================= -->
-    <section id="tabPanel-recovery" class="hidden space-y-6">
-      
-      <!-- 1. Live Biological & Mind Recovery Gauges -->
-      <div class="print-card bg-cardLight border border-slate-200 rounded-3xl p-5 sm:p-6 shadow-sm space-y-5">
-        <div class="border-b border-slate-200 pb-3">
-          <h2 class="text-lg sm:text-xl font-black text-slateDeep">🧬 مؤشرات الاستشفاء الجسدي والذهني الحية</h2>
-          <p class="text-xs text-slate-500 mt-0.5">تتفاعل هذه المؤشرات تلقائياً مع التزامك الفعلي في مسارات التبطيل والنوم والتركيز</p>
-        </div>
-        <div id="recoveryGaugesGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <!-- 5 Gauges populated dynamically -->
-        </div>
-      </div>
-
-      <!-- 2. 💰 صندوق المكافآت الذكية (Visual EGP Savings Jar) -->
-      <div class="print-card bg-cardLight border border-slate-200 rounded-3xl p-5 sm:p-6 shadow-sm space-y-4">
-        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 pb-3">
-          <div>
-            <h3 class="text-lg sm:text-xl font-black text-slateDeep">💰 صندوق المكافآت الذكية (حصالة التحوّل بالجنيه المصري)</h3>
-            <p class="text-xs text-slate-500 mt-0.5">يجمع توفيرك من السجائر + توفيرك من الشراء الاندفاعي لتمويل مكافآتك الحقيقية</p>
-          </div>
-          <div class="bg-amber-100 border border-amber-300 px-4 py-2 rounded-2xl text-right">
-            <span class="text-[11px] font-bold text-amber-800 block">رصيد الحصالة الكلي</span>
-            <strong id="jarTotalBalanceText" class="text-lg sm:text-xl font-black text-amber-700">0 ج.م</strong>
-          </div>
-        </div>
-
-        <div id="rewardsJarGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-          <!-- 5 Unlockable Real-Life Rewards -->
-        </div>
-      </div>
-
-      <!-- 3. 🏅 12 Achievement Badges -->
-      <div class="print-card bg-cardLight border border-slate-200 rounded-3xl p-5 sm:p-6 shadow-sm space-y-4">
-        <div class="flex items-center justify-between">
-          <div>
-            <h3 class="text-lg sm:text-xl font-black text-slateDeep">🏅 شارات البطولة والإنجاز (12 شارة)</h3>
-            <p class="text-xs text-slate-500 mt-0.5">اجمع الشارات عبر الاستمرار في التبطيل، التعلّم، الفجر، والنوم المنضبط</p>
-          </div>
-          <span id="badgesProgressPill" class="text-xs font-black bg-teal-100 text-tealPrimary px-3 py-1 rounded-full">
-            0 / 12 مفتوحة
-          </span>
-        </div>
-        <div id="badgesGridContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-          <!-- 12 Badges populated dynamically -->
-        </div>
-      </div>
-
-      <!-- 4. 📊 Trigger Analytics Bar Chart -->
-      <div class="print-card bg-cardLight border border-slate-200 rounded-3xl p-5 sm:p-6 shadow-sm space-y-4">
-        <div class="flex flex-wrap items-center justify-between gap-2">
-          <div>
-            <h3 class="text-base sm:text-lg font-black text-slateDeep">📊 رادار المحفزات واستراتيجيات الحماية</h3>
-            <p class="text-xs text-slate-500">يكشف لك أكثر سبب يثير الرغبة لديك ويوفر لك خطة إغلاق مخصصة له</p>
-          </div>
-          <span id="triggersTotalPill" class="text-xs font-bold bg-slate-200 text-slate-700 px-3 py-1 rounded-full">
-            التسجيلات: 0
-          </span>
-        </div>
-        <div id="triggersChartRows" class="space-y-3">
-          <!-- Populated dynamically -->
-        </div>
-        <div id="triggerStrategyAlert" class="hidden bg-teal-50 border border-teal-200 rounded-2xl p-4 text-xs font-bold text-teal-900 leading-relaxed">
-          <!-- Populated dynamically -->
-        </div>
-      </div>
-
-    </section>
-
+      <div id="dayDetailBox" class="hidden bg-slate-900 border border-slate-700 rounded-2xl p-4 space-y-2"></div>
+    </div>
   </main>
 
-  <!-- ========================================================= -->
-  <!-- COMPACT FLOATING SOS BUTTON (bottom: 18px; left: 18px)    -->
-  <!-- ========================================================= -->
-  <button
-    type="button"
-    id="floatingSosBtn"
-    class="sos-float-btn bg-coralSos hover:bg-rose-600 active:scale-95 text-white font-black text-xs sm:text-sm px-4 py-3 rounded-full border border-rose-300/50 flex items-center gap-2 transition cursor-pointer"
-    title="افتح غرفة الطوارئ لاحتواء الرغبة في 5 دقائق">
-    <span class="text-base">🚨</span>
-    <span>طوارئ SOS</span>
+  <!-- Floating SOS Emergency Button -->
+  <button onclick="openSOS()" class="fixed bottom-5 left-5 z-40 bg-rose-600 hover:bg-rose-500 text-white font-black text-xs px-4 py-3.5 rounded-full shadow-xl shadow-rose-950/80 border-2 border-rose-300/40 flex items-center gap-1.5 animate-pulse no-print">
+    <span>🚨</span><span>طوارئ SOS</span>
   </button>
 
-  <!-- ========================================================= -->
-  <!-- MODAL 1: SOS EMERGENCY ROOM (غرفة الطوارئ)                -->
-  <!-- ========================================================= -->
-  <div id="sosModal" style="display: none;" class="no-print fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/85 backdrop-blur-sm p-3 sm:p-5 overflow-y-auto">
-    <div class="bg-white border border-slate-200 rounded-3xl max-w-3xl w-full shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col text-slateDeep">
-      
-      <!-- Header -->
-      <div class="bg-gradient-to-l from-coralSos via-slateDeep to-teal-900 text-white px-5 py-4 flex items-center justify-between shrink-0">
-        <div class="flex items-center gap-3">
-          <span class="text-2xl sm:text-3xl">🛡️</span>
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-5 space-y-4 my-8 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h3 class="text-base font-black text-emerald-400">⚙️ الإعدادات والأعداد والحفظ</h3>
+        <button onclick="closeSettings()" class="text-slate-400 hover:text-white text-xl font-bold px-2">✕</button>
+      </div>
+
+      <!-- Cigarettes Config -->
+      <div class="bg-slate-950/70 border border-slate-800 rounded-xl p-3 space-y-3">
+        <h4 class="text-xs font-extrabold text-amber-400">🚭 إعدادات السجائر والتوفير</h4>
+        <div class="grid grid-cols-2 gap-2">
           <div>
-            <h3 class="text-base sm:text-lg font-black">غرفة الطوارئ (SOS) — احتواء الموجة</h3>
-            <p class="text-xs text-amber-200">الرغبة موجة عابرة تستمر 5 دقائق فقط — اصمد واكسب +50 XP!</p>
+            <label class="block text-[11px] text-slate-400 mb-1">استهلاكك السابق (سيجارة/يوم)</label>
+            <input id="cfgBaseCigs" type="number" min="1" max="100" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-white font-bold">
           </div>
-        </div>
-        <button type="button" id="closeSosModalBtn" class="w-9 h-9 rounded-xl bg-white/15 hover:bg-white/25 text-white font-bold flex items-center justify-center cursor-pointer">✕</button>
-      </div>
-
-      <!-- Body -->
-      <div class="p-5 sm:p-6 space-y-5 overflow-y-auto">
-        
-        <!-- 5-Minute Countdown + 4-7-8 Breathing Visualizer -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          
-          <!-- 5-Min Urge Timer -->
-          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex flex-col items-center justify-between text-center">
-            <div>
-              <span class="text-[11px] font-extrabold bg-rose-100 text-coralSos px-3 py-0.5 rounded-full">مؤقت انحسار الرغبة</span>
-              <h4 class="text-sm font-black text-slateDeep mt-2">اصمد 5 دقائق فقط</h4>
-            </div>
-
-            <div class="my-3">
-              <div id="sosCountdownText" class="text-4xl sm:text-5xl font-black text-slateDeep tabular-nums">05:00</div>
-              <div class="w-48 bg-slate-200 h-2 rounded-full mt-2.5 mx-auto overflow-hidden">
-                <div id="sosCountdownBar" class="bg-gradient-to-l from-coralSos to-goldXp h-full transition-all duration-1000" style="width: 100%"></div>
-              </div>
-            </div>
-
-            <div class="flex items-center gap-2 w-full">
-              <button type="button" id="sosTimerToggleBtn" class="flex-1 bg-slateDeep hover:bg-slate-800 text-white font-bold text-xs py-2.5 rounded-xl cursor-pointer">
-                ⏸️ إيقاف مؤقت
-              </button>
-              <button type="button" id="sosTimerResetBtn" class="bg-slate-200 hover:bg-slate-300 text-slateDeep font-bold text-xs py-2.5 px-3 rounded-xl cursor-pointer">
-                🔄 05:00
-              </button>
-            </div>
-          </div>
-
-          <!-- 4-7-8 Breathing Circle -->
-          <div class="bg-teal-50/70 border border-teal-200 rounded-2xl p-4 flex flex-col items-center justify-between text-center">
-            <div class="w-full flex items-center justify-between">
-              <span class="text-xs font-black text-tealPrimary">تمرين التنفس 4-7-8</span>
-              <button type="button" id="sosBreathSoundBtn" class="text-[11px] font-bold bg-white border border-teal-200 text-slateDeep px-2.5 py-1 rounded-lg cursor-pointer">
-                🔊 نغمة
-              </button>
-            </div>
-
-            <div class="relative w-32 h-32 flex items-center justify-center my-2">
-              <div class="absolute inset-0 rounded-full border-2 border-dashed border-tealPrimary/40"></div>
-              <div id="sosBreathCircle" class="breathing-orb w-20 h-20 rounded-full bg-tealPrimary text-white flex flex-col items-center justify-center shadow-lg">
-                <span id="sosBreathSec" class="text-xl font-black leading-none">4-7-8</span>
-                <span id="sosBreathPhase" class="text-[10px] font-extrabold mt-0.5">جاهز</span>
-              </div>
-            </div>
-
-            <div class="w-full space-y-2">
-              <p id="sosBreathPrompt" class="text-xs font-bold text-teal-900">شهيق 4ث • حبس 7ث • زفير 8ث</p>
-              <button type="button" id="sosBreathToggleBtn" class="w-full bg-tealPrimary hover:bg-teal-700 text-white font-black text-xs py-2.5 rounded-xl cursor-pointer">
-                ▶️ ابدأ التنفس الموجه
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- 1-Tap Instant Physical Distraction Checklist -->
-        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2.5">
-          <h4 class="text-xs sm:text-sm font-black text-slateDeep">⚡ خطوات تشتيت جسدية فورية (اضغط على ما نفذته الآن):</h4>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            <label class="flex items-center gap-2.5 bg-white border border-slate-200 rounded-xl p-2.5 text-xs font-bold cursor-pointer">
-              <input type="checkbox" class="w-4 h-4 accent-tealPrimary" />
-              <span>🧊 شرب كوب ماء مثلج ببطء</span>
-            </label>
-            <label class="flex items-center gap-2.5 bg-white border border-slate-200 rounded-xl p-2.5 text-xs font-bold cursor-pointer">
-              <input type="checkbox" class="w-4 h-4 accent-tealPrimary" />
-              <span>💪 15 عدة ضغط أو سكوات حالاً</span>
-            </label>
-            <label class="flex items-center gap-2.5 bg-white border border-slate-200 rounded-xl p-2.5 text-xs font-bold cursor-pointer">
-              <input type="checkbox" class="w-4 h-4 accent-tealPrimary" />
-              <span>🚪 وضع الهاتف خارج الغرفة وتغيير المكان</span>
-            </label>
-            <label class="flex items-center gap-2.5 bg-white border border-slate-200 rounded-xl p-2.5 text-xs font-bold cursor-pointer">
-              <input type="checkbox" class="w-4 h-4 accent-tealPrimary" />
-              <span>🕌 الوضوء وصلاة ركعتين لله</span>
-            </label>
-          </div>
-        </div>
-
-        <!-- Trigger Logger -->
-        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
-          <span class="text-xs font-extrabold text-slate-600 block">📊 سجّل سبب الموجة لتحليله في رادار المحفزات:</span>
-          <div class="flex flex-wrap gap-2">
-            <button type="button" data-trig="ملل وفراغ" class="sos-trig-btn px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-xs font-bold cursor-pointer">😑 ملل وفراغ</button>
-            <button type="button" data-trig="توتر وضغط شغل" class="sos-trig-btn px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-xs font-bold cursor-pointer">😰 توتر وضغط شغل</button>
-            <button type="button" data-trig="سهر وموبايل في السرير" class="sos-trig-btn px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-xs font-bold cursor-pointer">📱 سهر وموبايل</button>
-            <button type="button" data-trig="عزلة ووحدة" class="sos-trig-btn px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-xs font-bold cursor-pointer">🚪 عزلة ووحدة</button>
-            <button type="button" data-trig="بعد الأكل أو القهوة" class="sos-trig-btn px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-xs font-bold cursor-pointer">☕ بعد الأكل/القهوة</button>
-          </div>
-        </div>
-
-        <!-- Victory CTA -->
-        <button type="button" id="claimSosWinBtn" class="w-full py-3.5 px-5 rounded-2xl bg-gradient-to-l from-emeraldWin to-tealPrimary hover:opacity-95 text-white font-black text-sm sm:text-base shadow-lg transition flex items-center justify-center gap-2 cursor-pointer">
-          <span>🏆</span>
-          <span>تغلبت على الرغبة! (+50 XP مكافأة الصمود)</span>
-        </button>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- ========================================================= -->
-  <!-- MODAL 2: SETTINGS, BACKUP & PWA INSTALL GUIDE             -->
-  <!-- ========================================================= -->
-  <div id="settingsModal" style="display: none;" class="no-print fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/85 backdrop-blur-sm p-3 sm:p-5 overflow-y-auto">
-    <div class="bg-white border border-slate-200 rounded-3xl max-w-2xl w-full shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col text-slateDeep">
-      
-      <!-- Header -->
-      <div class="bg-slateDeep text-white px-5 py-4 flex items-center justify-between shrink-0">
-        <div class="flex items-center gap-2">
-          <span class="text-xl">⚙️</span>
-          <h3 class="text-base sm:text-lg font-black">الإعدادات الشخصية، النسخ الاحتياطي، وتثبيت التطبيق</h3>
-        </div>
-        <button type="button" id="closeSettingsModalBtn" class="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold flex items-center justify-center cursor-pointer">✕</button>
-      </div>
-
-      <!-- Body -->
-      <div class="p-5 sm:p-6 space-y-5 overflow-y-auto">
-        
-        <form id="settingsForm" class="space-y-4">
-          <!-- Smoking & Savings Config -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <label for="cfgCigsPerDay" class="block text-xs font-extrabold text-slate-700 mb-1">عدد السجائر يومياً قبل الإقلاع</label>
-              <input id="cfgCigsPerDay" type="number" min="1" max="100" value="20"
-                     class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2 text-sm font-black focus:outline-none focus:border-tealPrimary" />
-            </div>
-            <div>
-              <label for="cfgPackPrice" class="block text-xs font-extrabold text-slate-700 mb-1">سعر علبة السجائر (ج.م)</label>
-              <input id="cfgPackPrice" type="number" min="5" max="1000" value="75"
-                     class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2 text-sm font-black focus:outline-none focus:border-tealPrimary" />
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <label for="cfgQuitStrategy" class="block text-xs font-extrabold text-slate-700 mb-1">أسلوب الإقلاع عن التدخين</label>
-              <select id="cfgQuitStrategy" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs sm:text-sm font-bold focus:outline-none focus:border-tealPrimary">
-                <option value="gradual">التقليل التدريجي (7 أيام ثم 0 يوم 8)</option>
-                <option value="cold_turkey">التوقف الفوري من اليوم الأول (0)</option>
-              </select>
-            </div>
-            <div>
-              <label for="cfgCurrentDay" class="block text-xs font-extrabold text-slate-700 mb-1">تحديد اليوم الحالي في الخطة (1–90)</label>
-              <input id="cfgCurrentDay" type="number" min="1" max="90" value="1"
-                     class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2 text-sm font-black text-tealPrimary focus:outline-none focus:border-tealPrimary" />
-            </div>
-          </div>
-
-          <!-- Work End & Sleep Schedule -->
-          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 space-y-2">
-            <span class="text-xs font-black text-tealPrimary block">😴 تخصيص مواعيد العمل والنوم:</span>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
-                <label for="cfgWorkEnd" class="block text-[11px] font-extrabold text-slate-600 mb-1">وقت انتهاء العمل</label>
-                <input id="cfgWorkEnd" type="text" value="00:00 (12:00 ص)"
-                       class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs sm:text-sm font-bold focus:outline-none focus:border-tealPrimary" />
-              </div>
-              <div>
-                <label for="cfgTargetSleep" class="block text-[11px] font-extrabold text-slate-600 mb-1">وقت النوم الأساسي قبل الفجر</label>
-                <input id="cfgTargetSleep" type="text" value="02:30 ص"
-                       class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs sm:text-sm font-bold focus:outline-none focus:border-tealPrimary" />
-              </div>
-            </div>
-          </div>
-
-          <button type="submit" class="w-full bg-tealPrimary hover:bg-teal-700 text-white font-black text-sm py-3 rounded-xl shadow transition cursor-pointer">
-            💾 حفظ الإعدادات وتحديث الجداول
-          </button>
-        </form>
-
-        <!-- JSON Backup & Restore Section -->
-        <div class="border-t border-slate-200 pt-4 space-y-2.5">
-          <h4 class="text-xs sm:text-sm font-black text-slateDeep flex items-center gap-1.5">
-            <span>📦</span>
-            <span>النسخ الاحتياطي ونقل البيانات (JSON Backup / Restore)</span>
-          </h4>
-          <p class="text-[11px] text-slate-500">
-            احفظ نسخة احتياطية من تقدمك ونقاطك على موبايلك لتتمكن من استرجاعها في أي وقت أو على أي جهاز آخر:
-          </p>
-          <div class="flex flex-wrap items-center gap-2">
-            <button type="button" id="exportJsonBackupBtn" class="flex-1 bg-slateDeep hover:bg-slate-800 text-white font-bold text-xs py-2.5 px-3 rounded-xl transition cursor-pointer">
-              ⬇️ تصدير نسخة احتياطية (JSON)
-            </button>
-            <label class="flex-1 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slateDeep font-bold text-xs py-2.5 px-3 rounded-xl text-center transition cursor-pointer">
-              ⬆️ استيراد نسخة احتياطية
-              <input type="file" id="importJsonBackupInput" accept=".json,application/json" class="hidden" />
-            </label>
-          </div>
-        </div>
-
-        <!-- 📲 PWA Mobile Home Screen Install Guide -->
-        <div class="bg-teal-50 border border-teal-200 rounded-2xl p-4 space-y-2">
-          <h4 class="text-xs sm:text-sm font-black text-teal-950 flex items-center gap-1.5">
-            <span>📲</span>
-            <span>دليل التثبيت كتطبيق على الموبايل (أندرويد وآيفون)</span>
-          </h4>
-          <ul class="text-[11px] text-teal-900 space-y-1.5 font-tajawal leading-relaxed">
-            <li><strong>على الأندرويد (Chrome):</strong> افتح المنصة في متصفح Chrome، اضغط على قائمة النقاط الثلاث (⋮) في الأعلى، ثم اختر <strong>"تثبيت التطبيق" (Install App)</strong> أو <strong>"الإضافة إلى الشاشة الرئيسية"</strong>.</li>
-            <li><strong>على الآيفون (Safari):</strong> افتح المنصة في Safari، اضغط على زر المشاركة (مربع يخرج منه سهم ⬆️) في الأسفل، ثم اختر <strong>"إضافة إلى الصفحة الرئيسية" (Add to Home Screen)</strong>.</li>
-            <li>بعد التثبيت ستظهر أيقونة <strong>"التحوّل 90"</strong> على شاشة موبايلك وتفتح في وضع ملء الشاشة بدون شريط المتصفح!</li>
-          </ul>
-        </div>
-
-        <!-- Safe 2-Step Inline Confirmation Reset (Zero confirm()/alert()) -->
-        <div class="border-t border-slate-200 pt-3 space-y-2">
-          <div id="resetInitialRow" class="flex items-center justify-between gap-2">
-            <span class="text-xs text-slate-500">تريد تصفير كافة البيانات والبدء من جديد؟</span>
-            <button type="button" id="initResetBtn" class="text-xs font-extrabold text-coralSos bg-rose-50 hover:bg-rose-100 border border-rose-200 px-3 py-1.5 rounded-xl transition cursor-pointer">
-              🔄 إعادة ضبط البيانات
-            </button>
-          </div>
-          <div id="resetConfirmRow" class="hidden bg-rose-50 border border-rose-300 rounded-2xl p-3 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2">
-            <button type="button" id="confirmResetAllBtn" class="flex-1 bg-coralSos hover:bg-rose-600 text-white font-black text-xs py-2.5 px-3 rounded-xl cursor-pointer">
-              ⚠️ تأكيد مسح كل البيانات نهائياً (<span id="resetTimerSec">5</span>ث)
-            </button>
-            <button type="button" id="cancelResetAllBtn" class="bg-white border border-slate-300 text-slateDeep font-bold text-xs py-2.5 px-3 rounded-xl cursor-pointer">
-              إلغاء
-            </button>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- ========================================================= -->
-  <!-- MODAL 3: ADD CUSTOM TRACK ("+ أضف خطتك الخاصة")           -->
-  <!-- ========================================================= -->
-  <div id="customTrackModal" style="display: none;" class="no-print fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/85 backdrop-blur-sm p-3 sm:p-5 overflow-y-auto">
-    <div class="bg-white border border-slate-200 rounded-3xl max-w-lg w-full shadow-2xl overflow-hidden my-auto text-slateDeep">
-      <div class="bg-tealPrimary text-white px-5 py-4 flex items-center justify-between">
-        <h3 class="text-base sm:text-lg font-black flex items-center gap-2">
-          <span>➕</span>
-          <span>أضف خطتك الخاصة (تبطيل أو تعلّم)</span>
-        </h3>
-        <button type="button" id="closeCustomTrackModalBtn" class="w-8 h-8 rounded-xl bg-white/15 hover:bg-white/25 font-bold cursor-pointer">✕</button>
-      </div>
-
-      <form id="customTrackForm" class="p-5 sm:p-6 space-y-4">
-        <div class="grid grid-cols-3 gap-3">
           <div>
-            <label for="custIcon" class="block text-xs font-extrabold text-slate-700 mb-1">الأيقونة</label>
-            <select id="custIcon" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-base font-bold">
-              <option value="🎯">🎯</option>
-              <option value="💻">💻</option>
-              <option value="🚫">🚫</option>
-              <option value="📖">📖</option>
-              <option value="🧘‍♂️">🧘‍♂️</option>
-              <option value="🥗">🥗</option>
-              <option value="🎨">🎨</option>
-              <option value="⚡">⚡</option>
-            </select>
-          </div>
-          <div class="col-span-2">
-            <label for="custCategory" class="block text-xs font-extrabold text-slate-700 mb-1">نوع المسار</label>
-            <select id="custCategory" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs sm:text-sm font-bold">
-              <option value="quitting">مسار تبطيل وتعافي</option>
-              <option value="learning">مسار تعلّم وبناء مهارة</option>
-              <option value="lifestyle">مسار نظام وصحة</option>
-            </select>
+            <label class="block text-[11px] text-slate-400 mb-1">سعر العلبة (20 سيجارة)</label>
+            <input id="cfgPackPrice" type="number" min="1" max="500" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-white font-bold">
           </div>
         </div>
-
         <div>
-          <label for="custTitle" class="block text-xs font-extrabold text-slate-700 mb-1">عنوان الخطة / المسار</label>
-          <input id="custTitle" type="text" required placeholder="مثال: تعلّم البرمجة 30 دقيقة يومياً أو تبطيل المشروبات الغازية"
-                 class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-bold focus:outline-none focus:border-tealPrimary" />
+          <label class="block text-[11px] text-slate-400 mb-1">نظام التبطيل</label>
+          <select id="cfgQuitMode" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white font-bold">
+            <option value="immediate">تبطيل فوري (0 سيجارة من اليوم الأول)</option>
+            <option value="gradual">تقليل تدريجي (ينزل للصفر خلال 7 أيام)</option>
+          </select>
         </div>
+      </div>
 
-        <div>
-          <label for="custFullTask" class="block text-xs font-extrabold text-slate-700 mb-1">المهمة في الوضع المتكامل (اليومي)</label>
-          <input id="custFullTask" type="text" required placeholder="مثال: تطبيق درس برمجة عملي لمدة 30 دقيقة"
-                 class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-bold focus:outline-none focus:border-tealPrimary" />
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <div class="sm:col-span-2">
-            <label for="custLiteTask" class="block text-xs font-extrabold text-slate-700 mb-1">المهمة في الوضع الخفيف (دقيقتين)</label>
-            <input id="custLiteTask" type="text" required placeholder="مثال: قراءة ملخص مفهوم واحد في دقيقتين"
-                   class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2 text-xs font-bold focus:outline-none focus:border-tealPrimary" />
+      <!-- Exercises Config -->
+      <div class="bg-slate-950/70 border border-slate-800 rounded-xl p-3 space-y-2.5">
+        <h4 class="text-xs font-extrabold text-sky-400">💪 التحكم في أعداد التمارين</h4>
+        <div id="exConfigList" class="space-y-2"></div>
+        <div class="pt-2 border-t border-slate-800 grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-[10px] text-slate-400 mb-1">اسم تمرين إضافي (اختياري)</label>
+            <input id="cfgCustomExName" type="text" placeholder="مثال: عقلة / بطن" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white">
           </div>
           <div>
-            <label for="custDuration" class="block text-xs font-extrabold text-slate-700 mb-1">المدة (يوم)</label>
-            <input id="custDuration" type="number" min="7" max="90" value="30"
-                   class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs sm:text-sm font-black" />
+            <label class="block text-[10px] text-slate-400 mb-1">العدد / المدة</label>
+            <input id="cfgCustomExCount" type="text" placeholder="مثال: 3×15" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white">
           </div>
         </div>
+      </div>
 
-        <div class="flex items-center gap-3 pt-2">
-          <button type="submit" class="flex-1 bg-tealPrimary hover:bg-teal-700 text-white font-black text-sm py-3 rounded-xl shadow cursor-pointer">
-            ✨ إضافة وتفعيل المسار فوراً
-          </button>
-          <button type="button" id="cancelCustomTrackBtn" class="px-4 bg-slate-200 hover:bg-slate-300 text-slateDeep font-bold text-sm py-3 rounded-xl cursor-pointer">
-            إلغاء
-          </button>
+      <!-- Manual Day & Points Recovery -->
+      <div class="bg-slate-950/70 border border-slate-800 rounded-xl p-3 space-y-2.5">
+        <h4 class="text-xs font-extrabold text-purple-400">🛡️ ضبط اليوم والنقاط وكود الحفظ</h4>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-[10px] text-slate-400 mb-1">رقم اليوم الحالي (1-90)</label>
+            <input id="cfgManualDay" type="number" min="1" max="90" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white font-bold">
+          </div>
+          <div>
+            <label class="block text-[10px] text-slate-400 mb-1">رصيد النقاط (XP)</label>
+            <input id="cfgManualPoints" type="number" min="0" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white font-bold">
+          </div>
         </div>
-      </form>
+        <div class="flex gap-2 pt-1">
+          <button onclick="copyBackupCode()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700 py-2 rounded-lg text-xs font-bold">📋 نسخ كود التقدم</button>
+          <button onclick="pasteBackupCode()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-700 py-2 rounded-lg text-xs font-bold">📥 استرجاع بكود</button>
+        </div>
+      </div>
+
+      <button onclick="saveSettings()" class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-sm">💾 حفظ وتطبيق التعديلات</button>
     </div>
   </div>
 
-  <!-- ========================================================= -->
-  <!-- MODAL 4: SUPPORTIVE SLIP-UP / STREAK CORRECTION           -->
-  <!-- ========================================================= -->
-  <div id="slipModal" style="display: none;" class="no-print fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/85 backdrop-blur-sm p-4 overflow-y-auto">
-    <div class="bg-white border border-slate-200 rounded-3xl max-w-md w-full p-5 sm:p-6 space-y-4 shadow-2xl my-auto text-slateDeep">
-      <div class="flex items-center justify-between">
-        <h3 class="text-base font-black text-amber-700 flex items-center gap-2">
-          <span>🧭</span>
-          <span>تصحيح المسار بدون جلد ذات</span>
-        </h3>
-        <button type="button" id="closeSlipModalBtn" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 font-bold cursor-pointer">✕</button>
+  <!-- SOS Emergency Modal -->
+  <div id="sosModal" class="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur hidden items-center justify-center p-4">
+    <div class="bg-slate-900 border-2 border-rose-500/50 rounded-3xl max-w-md w-full p-6 text-center space-y-5">
+      <div class="inline-flex items-center gap-2 bg-rose-500/20 text-rose-300 px-3 py-1 rounded-full text-xs font-bold">🚨 غرفة الطوارئ وكسر الرغبة</div>
+      <h3 class="text-xl font-black text-white">اصمد 5 دقائق فقط — الموجة ستنكسر!</h3>
+      <div class="text-5xl font-black text-rose-400 tracking-wider font-mono" id="sosTimer">05:00</div>
+      <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 space-y-2">
+        <div id="breathText" class="text-lg font-extrabold text-emerald-400">شهيق عميق من الأنف (4 ثوانٍ)...</div>
+        <p class="text-xs text-slate-400">ركّز على تنفسك الآن، اشرب كوب ماء بارد، وغيّر مكانك فوراً.</p>
       </div>
-      <p class="text-xs text-slate-600 leading-relaxed">
-        التعثر العابر درس وليس نهاية الطريق. سنقوم بتصفير عداد التتالي الحالي فقط، بينما <strong>تبقى أيامك النظيفة السابقة وشاراتك ونقاطك محفوظة بالكامل!</strong>
-      </p>
-      <div>
-        <label for="slipTriggerSelect" class="block text-xs font-extrabold text-slate-700 mb-1">ما السبب الرئيسي للتعثر؟</label>
-        <select id="slipTriggerSelect" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 text-xs sm:text-sm font-bold">
-          <option value="سهر وموبايل في السرير">سهر وموبايل في السرير</option>
-          <option value="ملل وفراغ">ملل وفراغ</option>
-          <option value="توتر وضغط شغل">توتر وضغط شغل</option>
-          <option value="عزلة ووحدة">عزلة ووحدة</option>
-          <option value="بعد الأكل أو القهوة">بعد الأكل أو القهوة</option>
-        </select>
-      </div>
-      <div class="flex items-center gap-2.5 pt-1">
-        <button type="button" id="confirmSlipBtn" class="flex-1 bg-goldXp hover:bg-amber-400 text-slateDeep font-black text-xs sm:text-sm py-3 rounded-xl cursor-pointer">
-          سجّل الدرس وواصل بقوة الآن
-        </button>
-        <button type="button" id="cancelSlipBtn" class="px-4 bg-slate-200 hover:bg-slate-300 font-bold text-xs sm:text-sm py-3 rounded-xl cursor-pointer">
-          إلغاء
-        </button>
+      <div class="flex gap-2">
+        <button onclick="resetSOSTimer()" class="flex-1 py-3 rounded-xl bg-slate-800 text-slate-200 text-xs font-bold">🔄 إعادة المؤقت</button>
+        <button onclick="closeSOS()" class="flex-1 py-3 rounded-xl bg-emerald-600 text-white text-xs font-black">✅ هدأت الرغبة — رجوع</button>
       </div>
     </div>
   </div>
 
-  <!-- Toast Notifications Stack -->
-  <div id="toastContainer" class="no-print fixed top-4 left-4 right-4 sm:left-6 sm:right-auto z-50 flex flex-col gap-2 pointer-events-none max-w-sm"></div>
+  <!-- Finish Screen Modal -->
+  <div id="finishModal" class="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur hidden items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-slate-900 border-2 border-amber-400/60 rounded-3xl max-w-md w-full p-6 text-center space-y-4 my-8">
+      <div class="text-5xl">🏆</div>
+      <div class="inline-block bg-amber-500/20 text-amber-300 px-3 py-1 rounded-full text-xs font-black">FINISH — شهادة إتمام الـ 90 يوماً</div>
+      <h2 class="text-2xl font-black text-white">بطل التحوّل الشامل!</h2>
+      <p class="text-xs text-slate-300 leading-relaxed">أتممت رحلة الـ 90 يوماً في تبطيل السجائر، التعافي، المحافظة على الصلاة، الرياضة، وتطوير العقل.</p>
+      <div class="grid grid-cols-2 gap-2 text-center bg-slate-950 p-3 rounded-2xl border border-slate-800">
+        <div>
+          <div class="text-[10px] text-slate-400">إجمالي النقاط</div>
+          <div class="text-lg font-black text-amber-400" id="finPoints">0 XP</div>
+        </div>
+        <div>
+          <div class="text-[10px] text-slate-400">المال الموفر من التدخين</div>
+          <div class="text-lg font-black text-emerald-400" id="finMoney">0 ج.م</div>
+        </div>
+        <div>
+          <div class="text-[10px] text-slate-400">سجائر لم تدخنها</div>
+          <div class="text-lg font-black text-sky-400" id="finCigs">0</div>
+        </div>
+        <div>
+          <div class="text-[10px] text-slate-400">الأيام المكتملة</div>
+          <div class="text-lg font-black text-purple-400" id="finDays">0 / 90</div>
+        </div>
+      </div>
+      <div class="flex gap-2 no-print">
+        <button onclick="window.print()" class="flex-1 py-3 rounded-xl bg-amber-500 text-slate-950 font-black text-xs">🖨️ طباعة / حفظ PDF</button>
+        <button onclick="closeFinishModal()" class="flex-1 py-3 rounded-xl bg-slate-800 text-white font-bold text-xs">إغلاق</button>
+      </div>
+    </div>
+  </div>
 
-  <!-- ========================================================= -->
-  <!-- COMPLETE APPLICATION LOGIC                                -->
-  <!-- ========================================================= -->
   <script>
-    const STORAGE_KEY = 'tahawol_shamel_90_v1';
+    const DB_NAME = 'Transform90DB_v2';
+    const STORE_NAME = 'appState';
+    const LS_KEY = 'transform90_state_v2';
 
-    // Ranks Progression
-    const RANKS = [
-      { minXp: 0, title: 'مبتدئ التحوّل', nextXp: 500 },
-      { minXp: 500, title: 'مكافح منضبط', nextXp: 1500 },
-      { minXp: 1500, title: 'صانع العادات', nextXp: 3200 },
-      { minXp: 3200, title: 'قائد الاستشفاء', nextXp: 5500 },
-      { minXp: 5500, title: 'بطل الـ 90 يوم', nextXp: 15000 }
+    const englishBank = [
+      { en: "Discipline is choosing what you want most over what you want now.", ar: "الانضباط هو أن تختار ما تريده بشدة على ما تريده الآن." },
+      { en: "Small daily improvements lead to stunning long-term results.", ar: "التحسينات اليومية الصغيرة تقود إلى نتائج مذهلة على المدى الطويل." },
+      { en: "You do not have to be extreme, just consistent.", ar: "لست مضطراً لأن تكون خارقاً، فقط كن مستمراً." },
+      { en: "Every day is a new chance to change your life.", ar: "كل يوم هو فرصة جديدة لتغيير حياتك." },
+      { en: "Strong minds control their habits; weak minds are controlled by them.", ar: "العقول القوية تتحكم في عاداتها، والعقول الضعيفة تتحكم فيها عاداتها." },
+      { en: "Focus on progress, not perfection.", ar: "ركّز على التقدم المستمر وليس الكمال." },
+      { en: "Your future self is watching you right now through your memories.", ar: "نسختك المستقبلية تراقبك الآن من خلال ذكرياتك." }
     ];
 
-    // Built-in 10 Multi-Category Tracks
-    const BUILTIN_TRACKS = [
-      // Category A: مسارات التبطيل والتعافي
-      {
-        id: 'smoking',
-        category: 'quitting',
-        icon: '🚭',
-        title: 'الإقلاع عن التدخين',
-        duration: 90,
-        keystoneOrder: 1,
-        fullDesc: 'الالتزام بالحد اليومي المتدرج (أو التوقف الفوري 0 سيجارة) وتجنب التدخين بعد الأكل والشغل.',
-        liteDesc: 'تأجيل أول سيجارة ساعة كاملة + استبدال سيجارة واحدة بماء بارد أو سواك.',
-        defaultEnabled: true
-      },
-      {
-        id: 'recovery',
-        category: 'quitting',
-        icon: '🧠',
-        title: 'التعافي من العادة السرية (90 يوماً)',
-        duration: 90,
-        keystoneOrder: 2,
-        fullDesc: 'يوم نظيف 100% + تفعيل درع الحماية الرقمي وإبعاد الموبايل قبل النوم بـ 30 دقيقة.',
-        liteDesc: 'وضع شاحن الموبايل خارج السرير قبل النوم مباشرة.',
-        defaultEnabled: true
-      },
-      {
-        id: 'detox',
-        category: 'quitting',
-        icon: '📱',
-        title: 'ديتوكس السوشيال ميديا والريلز',
-        duration: 30,
-        keystoneOrder: 5,
-        fullDesc: 'منع التصفح العشوائي والريلز تماماً بين 12:00 ص و 02:30 ص قبل النوم.',
-        liteDesc: 'إغلاق تطبيقات الفيديو والريلز قبل النوم بـ 20 دقيقة فقط.',
-        defaultEnabled: false
-      },
-      {
-        id: 'caffeine',
-        category: 'quitting',
-        icon: '☕',
-        title: 'ضبط الكافيين والسكر الليلي',
-        duration: 21,
-        keystoneOrder: 6,
-        fullDesc: 'صفر كافيين بعد 10:00 م وصفر سكريات ثقيلة بعد 12:00 ص لنوم عميق وصحي.',
-        liteDesc: 'استبدال كوب قهوة أو مشروب غازي واحد بالماء أو الأعشاب.',
-        defaultEnabled: false
-      },
+    const hifzBank = [
+      "قال تعالى: ﴿وَالَّذِينَ جَاهَدُوا فِينَا لَنَهْدِيَنَّهُمْ سُبُلَنَا وَإِنَّ اللَّهَ لَمَعَ الْمُحْسِنِينَ﴾ [العنكبوت: 69]",
+      "قال رسول الله ﷺ: «أَحَبُّ الأعمالِ إلى اللهِ أدْوَمُها وإن قَلَّ» [متفق عليه]",
+      "قال تعالى: ﴿إِنَّ اللَّهَ لَا يُغَيِّرُ مَا بِقَوْمٍ حَتَّى يُغَيِّرُوا مَا بِأَنفُسِهِمْ﴾ [الرعد: 11]",
+      "قال رسول الله ﷺ: «نِعْمَتَانِ مَغْبُونٌ فِيهِمَا كَثِيرٌ مِنَ النَّاسِ: الصِّحَّةُ وَالْفَرَاغُ» [رواه البخاري]",
+      "قال تعالى: ﴿فَإِنَّ مَعَ الْعُسْرِ يُسْرًا ۝ إِنَّ مَعَ الْعُسْرِ يُسْرًا﴾ [الشرح: 5-6]",
+      "قال رسول الله ﷺ: «احْرِصْ عَلَى مَا يَنْفَعُكَ، وَاسْتَعِنْ بِاللَّهِ وَلَا تَعْجَزْ» [رواه مسلم]",
+      "قال تعالى: ﴿وَاسْتَعِينُوا بِالصَّبْرِ وَالصَّلَاةِ وَإِنَّهَا لَكَبِيرَةٌ إِلَّا عَلَى الْخَاشِعِينَ﴾ [البقرة: 45]"
+    ];
 
-      // Category B: مسارات النظام والروح والصحة
+    const chessBank = [
       {
-        id: 'sleep',
-        category: 'lifestyle',
-        icon: '😴',
-        title: 'هندسة النوم الليلي (12:00 ص – 02:30 ص)',
-        duration: 90,
-        keystoneOrder: 3,
-        fullDesc: 'إتمام 3 من 4 خطوات لروتين ما بعد العمل والنوم الأساسي 02:30 ص قبل الفجر.',
-        liteDesc: 'إطفاء الأنوار والاستلقاء للنوم في الموعد المحدد بدون شاشات.',
-        defaultEnabled: true
+        q: "موقف شطرنج: ملك الخصم محصور في الصف الأخير (Back Rank) ولديك رخ (قلعة) حرة؛ ما هي النقلة القاتلة؟",
+        opts: ["تقديم بيدق الجناح", "إنزال الرخ للصف الأخير لكش مات (Back Rank Mate)", "تراجع الحصان للدفاع"],
+        ans: 1
       },
       {
-        id: 'prayer',
-        category: 'lifestyle',
-        icon: '🕌',
-        title: 'خطة الصلاة والوتر والأذكار',
-        duration: 90,
-        keystoneOrder: 4,
-        fullDesc: 'أداء الصلوات الخمس في وقتها + ركعتي الوتر وأذكار النوم + ورد القرآن اليومي.',
-        liteDesc: 'المحافظة على الفرائض + ركعة وتر سريعة قبل النوم.',
-        defaultEnabled: true
+        q: "موقف شطرنج: الملك والوزير للخصم على نفس القطر الأبيض، ولديك فيل أبيض؛ ما التكتيك الأنسب؟",
+        opts: ["تثبيت الوزير على الملك بالفيل (Pin)", "تبديل الجنود في الوسط", "تبييت الملك"],
+        ans: 0
       },
       {
-        id: 'workout',
-        category: 'lifestyle',
-        icon: '💪',
-        title: 'التمرين المنزلي والنشاط البدني',
-        duration: 90,
-        keystoneOrder: 7,
-        fullDesc: 'جلسة تمرين منزلي متدرجة لمدة 15 دقيقة (ضغط، سكوات، بلانك) لتنشيط الرئة والعضلات.',
-        liteDesc: 'دقيقتان إطالة كاملة للجسم أو 10 عدات ضغط سريعة.',
-        defaultEnabled: true
-      },
-
-      // Category C: خطط التعلّم وبناء المهارات
-      {
-        id: 'english',
-        category: 'learning',
-        icon: '🇬🇧',
-        title: 'إتقان الإنجليزية في 15 دقيقة',
-        duration: 90,
-        keystoneOrder: 8,
-        fullDesc: 'حفظ 5 عبارات عملية + 5 دقائق استماع + نطق جملة بصوت مسموع من كبسولة اليوم.',
-        liteDesc: 'قراءة ونطق عبارة إنجليزية واحدة من كبسولة اليوم في دقيقتين.',
-        defaultEnabled: true
+        q: "موقف شطرنج: حصانك يستطيع القفز لمربع يهدد فيه الملك والرخ معاً في نفس النقلة؛ ماذا يُسمى هذا التكتيك؟",
+        opts: ["التبييت الطويل", "الشوكة المزدوجة (Knight Fork)", "الأخذ بالتجاوز"],
+        ans: 1
       },
       {
-        id: 'finance',
-        category: 'learning',
-        icon: '💰',
-        title: 'الذكاء المالي وصندوق المكافآت',
-        duration: 60,
-        keystoneOrder: 9,
-        fullDesc: 'تجنب الشراء الاندفاعي اليوم وإضافة أي مبلغ موفّر إلى حصالة المكافآت بالجنيه المصري.',
-        liteDesc: 'تأجيل أي شراء غير ضروري لمدة 24 ساعة وتسجيل التزامك.',
-        defaultEnabled: true
-      },
-      {
-        id: 'reading',
-        category: 'learning',
-        icon: '📚',
-        title: 'القراءة والتركيز العميق',
-        duration: 30,
-        keystoneOrder: 10,
-        fullDesc: 'قراءة 5 صفحات من كتاب مفيد + جلسة تركيز عميق 15 دقيقة بدون هاتف.',
-        liteDesc: 'قراءة صفحة واحدة فقط بتركيز هادئ قبل النوم.',
-        defaultEnabled: false
+        q: "موقف شطرنج: في افتتاح اللعبة، ما أهم قاعدة ذهبية في أول 5 نقلات؟",
+        opts: ["تحريك الوزير مبكراً للهجوم", "السيطرة على الوسط ونشر القطع الخفيفة (الحصان والفيل)", "تحريك جميع البيادق على الأطراف"],
+        ans: 1
       }
     ];
 
-    // Daily English Capsules (Idioms / Practical Phrases)
-    const ENGLISH_CAPSULES = [
-      { en: 'Small steps every day lead to massive results.', ar: 'الخطوات الصغيرة كل يوم تؤدي إلى نتائج ضخمة.' },
-      { en: 'Discipline is choosing what you want most over what you want now.', ar: 'الانضباط هو أن تختار ما تريده بشدة على ما تريده الآن.' },
-      { en: 'Don’t break the chain; even a two-minute win counts.', ar: 'لا تكسر السلسلة؛ حتى إنجاز الدقيقتين يُحتسب.' },
-      { en: 'Your future self is watching you right now through your habits.', ar: 'نسختك المستقبلية تراقبك الآن من خلال عاداتك.' },
-      { en: 'Energy flows where your focus goes.', ar: 'طاقتك تتدفق نحو المكان الذي توجه إليه تركيزك.' },
-      { en: 'A setback is a setup for a stronger comeback.', ar: 'التعثر العابر هو تمهيد لعودة أقوى.' },
-      { en: 'Control your mornings and your nights, and you control your life.', ar: 'تحكّم في صباحك وليلك، وستتحكم في حياتك بأكملها.' },
-      { en: 'Progress, not perfection, is the secret of mastery.', ar: 'التقدم المستمر وليس الكمال اللحظي هو سر الإتقان.' }
-    ];
-
-    // Daily Tactical Tips
-    const TACTICAL_TIPS = [
-      'ضع شاحن الموبايل خارج السرير قبل النوم بـ 30 دقيقة؛ هذه الخطوة تحمي نومك وتركيزك معاً.',
-      'بعد العودة من الشغل الساعة 12:00 ص، ابدأ بدوش دافئ وماء بارد لفصل توتر العمل عن البيت.',
-      'في الأيام المرهقة، لا تترك اليوم صفراً؛ فعّل "الوضع الخفيف" وأنجز خطوة الدقيقتين لتحافظ على السلسلة.',
-      'اربط صلاة الوتر بوضع الهاتف على الشاحن؛ لتصبح إشارة ثابتة للمخ بأن وقت الشاشات قد انتهى.',
-      'كلما شعرت بملل مفاجئ، لفّ "عجلة البهاريز" ونفّذ التحدي السريع لكسر دائرة العادة القديمة.'
-    ];
-
-    // Daily Recovery Milestones
-    const RECOVERY_MILESTONES = [
-      'ينخفض أول أكسيد الكربون في الدم ويرتفع الأكسجين الواصل لخلايا المخ والعضلات.',
-      'تبدأ مستقبلات الدوبامين في الفص الجبهي بالهدوء واستعادة حساسيتها للمتعة الطبيعية.',
-      'تتحسن جودة النوم العميق قبل الفجر وتقل نوبات الصداع والتوتر العصبي.',
-      'تنشط الأهداب التنفسية في الرئتين لتنظيف الشعب الهوائية وزيادة القدرة على التنفس العميق.',
-      'تترسخ المسارات العصبية الجديدة للعادات الإيجابية وتصبح تلقائية بدون مجهود ذهني.'
-    ];
-
-    // 8 Segments for the Interactive Spin Wheel ("عجلة البهاريز")
-    const WHEEL_SEGMENTS = [
-      { label: '⚡ تمرين 3د', color: '#0d9488', icon: '⚡', cat: 'تنشيط جسدي سريع', title: '15 عدة ضغط أو إطالة كاملة للجسم (3 دقائق)', desc: 'تضخ الدم في العضلات وترفع الدوبامين الطبيعي فوراً وتطرد الخمول.', xp: 25 },
-      { label: '🇬🇧 تحدي إنجليزي', color: '#0284c7', icon: '🇬🇧', cat: 'تحدي لغوي سريع', title: 'انطق عبارة إنجليزية بصوت عالٍ 3 مرات واكتبها', desc: 'استخدم عبارة كبسولة اليوم في جملة من تأليفك لتثبيتها في ذاكرتك.', xp: 25 },
-      { label: '⭐ +30 XP هدية', color: '#f59e0b', icon: '⭐', cat: 'مكافأة حظ فورية!', title: 'مبروك! حصلت على +30 XP هدية تحفيزية', desc: 'اضغط زر الاستلام لإضافة النقاط لرصيدك وتقريبك للرتبة التالية.', xp: 30 },
-      { label: '🧊 انتعاش بارد', color: '#059669', icon: '🧊', cat: 'كسر النمط الفوري', title: 'اغسل وجهك بماء بارد واشرب كوب ماء كبير', desc: 'ينشط العصب الحائر ويوقف أي رغبة عابرة في أقل من 60 ثانية.', xp: 25 },
-      { label: '🌬️ تنفس 4-7-8', color: '#7c3aed', icon: '🌬️', cat: 'تهدئة الأعصاب', title: '3 جولات من التنفس العميق 4-7-8', desc: 'يخفض هرمون التوتر فوراً ويهيئ ذهنك للتركيز أو النوم الهادئ.', xp: 25 },
-      { label: '✍️ امتنان سريع', color: '#db2777', icon: '✍️', cat: 'شحن نفسي إيجابي', title: 'اكتب 3 نعم أو إنجازات حققتها هذا الأسبوع', desc: 'يعيد برمجة التفكير نحو الوفرة والاعتزاز بالتقدم المحرز.', xp: 25 },
-      { label: '📖 صفحة نور', color: '#ea580c', icon: '📖', cat: 'غذاء الروح والعقل', title: 'اقرأ صفحة من القرآن أو كتاب ملهم بتركيز', desc: '3 دقائق من القراءة الهادئة تصفي الذهن من ضجيج الشاشات.', xp: 25 },
-      { label: '💰 توفير ذكي', color: '#16a34a', icon: '💰', cat: 'ذكاء مالي', title: 'أضف 20 ج.م لحصالة المكافآت أو تجنب شراء غير ضروري', desc: 'خطوة صغيرة تقربك من شراء مكافأتك القادمة من حصالة التحوّل.', xp: 25 }
-    ];
-
-    // 5 Real-Life Rewards in EGP Savings Jar
-    const JAR_REWARDS = [
-      { id: 'r1', cost: 250, icon: '🧴', title: 'عطر فاخر أو قهوة مختصة' },
-      { id: 'r2', cost: 750, icon: '🏋️‍♂️', title: 'اشتراك جيم شهر أو ملابس رياضية' },
-      { id: 'r3', cost: 1800, icon: '⌚', title: 'ساعة ذكية رياضية أو سماعة لاسلكية' },
-      { id: 'r4', cost: 3500, icon: '🏖️', title: 'رحلة ويك إند استجمام وتجديد طاقة' },
-      { id: 'r5', cost: 6500, icon: '💻', title: 'ترقية لابتوب أو موبايل جديد من توفيرك' }
-    ];
-
-    // 12 Unlockable Achievement Badges
-    const BADGES_LIST = [
-      { id: 'b1', icon: '🌱', title: 'بداية التحوّل', desc: 'إتمام أول يوم في المنصة' },
-      { id: 'b2', icon: '🚭', title: 'أسبوع بلا نيكوتين', desc: '7 أيام صفر سجائر' },
-      { id: 'b3', icon: '🧠', title: 'درع الصفاء', desc: '7 أيام متتالية تعافي ذهني' },
-      { id: 'b4', icon: '🌅', title: 'حارس الفجر', desc: 'صلاة الفجر 7 أيام' },
-      { id: 'b5', icon: '⏰', title: 'مهندس النوم', desc: 'ضبط جدول النوم 7 أيام' },
-      { id: 'b6', icon: '🇬🇧', title: 'متحدث واثق', desc: 'إتمام 10 جلسات إنجليزي' },
-      { id: 'b7', icon: '🎡', title: 'ملك البهاريز', desc: 'إتمام 10 تحديات من العجلة' },
-      { id: 'b8', icon: '💰', title: 'صاحب الحصالة', desc: 'توفير 500 ج.م أو أكثر' },
-      { id: 'b9', icon: '🛡️', title: 'بطل الـ 30 يوم', desc: 'إتمام الشهر الأول بنجاح' },
-      { id: 'b10', icon: '💪', title: 'وحش اللياقة', desc: 'إتمام 20 جلسة تمرين' },
-      { id: 'b11', icon: '🏔️', title: '60 يوم انضباط', desc: 'إتمام الشهر الثاني بنجاح' },
-      { id: 'b12', icon: '👑', title: 'أسطورة الـ 90 يوم', desc: 'الاستشفاء والتحوّل الكامل' }
-    ];
-
-    const PRAYERS_LIST = [
-      { id: 'fajr', name: 'الفجر' },
-      { id: 'dhuhr', name: 'الظهر' },
-      { id: 'asr', name: 'العصر' },
-      { id: 'maghrib', name: 'المغرب' },
-      { id: 'isha', name: 'العشاء' },
-      { id: 'witr', name: 'الوتر والأذكار' },
-      { id: 'quran', name: 'ورد القرآن' }
-    ];
-
-    const MOODS = [
-      { id: 'great', emoji: '⚡', label: 'طاقة عالية' },
-      { id: 'calm', emoji: '😌', label: 'مستقر' },
-      { id: 'bored', emoji: '😑', label: 'ملل' },
-      { id: 'stress', emoji: '😤', label: 'ضغط شغل' },
-      { id: 'tired', emoji: '😴', label: 'مرهق' }
-    ];
-
-    const TRIGGER_STRATEGIES = {
-      'ملل وفراغ': '💡 خطة إغلاق "الملل والفراغ": لفّ عجلة البهاريز فور شعورك بالفراغ أو ابدأ كبسولة الإنجليزي لمدة 5 دقائق.',
-      'توتر وضغط شغل': '💡 خطة إغلاق "توتر وضغط الشغل": فور انتهاء العمل 12:00 ص، ابدأ بدوش دافئ وتنفس 4-7-8 بدلاً من السيجارة.',
-      'سهر وموبايل في السرير': '💡 خطة إغلاق "السهر والموبايل": ضع شاحن الهاتف خارج غرفة النوم قبل الساعة 01:30 ص وصلِّ الوتر.',
-      'عزلة ووحدة': '💡 خطة إغلاق "العزلة والوحدة": اجلس مع الأسرة أو غيّر مكان جلوسك واترك باب الغرفة مفتوحاً.',
-      'بعد الأكل أو القهوة': '💡 خطة إغلاق "بعد الأكل والقهوة": استبدل سيجارة ما بعد الأكل بسواك أو كوب ماء بارد فوراً.'
+    const defaultState = {
+      currentDay: 1,
+      totalPoints: 0,
+      config: {
+        baseCigs: 20,
+        packPrice: 65,
+        quitMode: 'immediate',
+        exercises: {
+          pushups: { name: 'تمرين الضغط (Push-ups)', count: 20, unit: 'عدّة' },
+          squats: { name: 'تمرين السكوات (Squats)', count: 25, unit: 'عدّة' },
+          plank: { name: 'تمرين البلانك (Plank)', count: 45, unit: 'ثانية' },
+          abs: { name: 'تمرين البطن / قفز الحبل', count: 30, unit: 'عدّة' },
+          walk: { name: 'مشي سريع أو إطالة', count: 15, unit: 'دقيقة' }
+        },
+        customExName: '',
+        customExCount: ''
+      },
+      daysData: {} // { [day]: { status: { stepId: 'done'|'fail' }, notes: { stepId: '' }, cigsSmoked: 0, chessSolved: false, completed: false, pointsEarned: 0 } }
     };
 
-    // Default Application State
-    const DEFAULT_STATE = {
-      settings: {
-        cigsPerDay: 20,
-        packPrice: 75,
-        quitStrategy: 'gradual',
-        workEndTime: '00:00 (12:00 ص)',
-        targetSleepTime: '02:30 ص'
-      },
-      soundEnabled: true,
-      selectedDay: 1,
-      activeTab: 'cockpit',
-      executionMode: 'full', // 'lite' | 'full' | 'progressive'
-      roadmapMonthFilter: 'all',
-      enabledTracks: ['smoking', 'recovery', 'sleep', 'prayer', 'workout', 'english', 'finance'],
-      customTracks: [],
-      bonusXp: 0,
-      bestRecoveryStreak: 0,
-      wheelRotation: 0,
-      currentWheelIndex: 0,
-      triggersLog: {
-        'ملل وفراغ': 0,
-        'توتر وضغط شغل': 0,
-        'سهر وموبايل في السرير': 0,
-        'عزلة ووحدة': 0,
-        'بعد الأكل أو القهوة': 0
-      },
-      days: {}
-    };
-
-    let state = loadState();
-
-    // Runtime Timers
-    let workoutSeconds = 900;
-    let workoutTimerId = null;
-    let workoutRunning = false;
-
-    let focusSeconds = 900;
-    let focusTimerId = null;
-    let focusRunning = false;
-
+    let state = JSON.parse(JSON.stringify(defaultState));
+    let plankInterval = null;
+    let plankRemaining = 45;
+    let sosInterval = null;
     let sosSeconds = 300;
-    let sosTimerId = null;
-    let sosRunning = false;
 
-    let sosBreathTimerId = null;
-    let sosBreathRunning = false;
-    let sosBreathStepIdx = 0;
-    let sosBreathSecLeft = 4;
-
-    let isWheelSpinning = false;
-    let resetConfirmTimer = null;
-    let resetSecLeft = 5;
-
-    const BREATH_PHASES = [
-      { label: 'شهيق عميق', sec: 4, guide: 'شهيق عميق من الأنف (4 ثوانٍ)', scale: 'scale-125', bg: 'bg-tealPrimary', freq: 396 },
-      { label: 'احبس نفسك', sec: 7, guide: 'احبس نفسك بهدوء (7 ثوانٍ)', scale: 'scale-125', bg: 'bg-goldXp', freq: 528 },
-      { label: 'زفير بطيء', sec: 8, guide: 'زفير بطيء من الفم (8 ثوانٍ)', scale: 'scale-90', bg: 'bg-emeraldWin', freq: 285 }
-    ];
-
-    // =========================================================
-    // STATE LOAD / SAVE & PWA MANIFEST GENERATION
-    // =========================================================
-
-    function loadState() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return JSON.parse(JSON.stringify(DEFAULT_STATE));
-        const parsed = JSON.parse(raw);
-        return {
-          ...JSON.parse(JSON.stringify(DEFAULT_STATE)),
-          ...parsed,
-          settings: { ...DEFAULT_STATE.settings, ...(parsed.settings || {}) },
-          triggersLog: { ...DEFAULT_STATE.triggersLog, ...(parsed.triggersLog || {}) },
-          enabledTracks: Array.isArray(parsed.enabledTracks) ? parsed.enabledTracks : DEFAULT_STATE.enabledTracks,
-          customTracks: Array.isArray(parsed.customTracks) ? parsed.customTracks : [],
-          days: parsed.days || {}
-        };
-      } catch (e) {
-        return JSON.parse(JSON.stringify(DEFAULT_STATE));
+    function getDayObj(day) {
+      if (!state.daysData[day]) {
+        state.daysData[day] = { status: {}, notes: {}, cigsSmoked: 0, chessSolved: false, completed: false, pointsEarned: 0 };
       }
+      return state.daysData[day];
     }
 
-    function saveState() {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-      } catch (e) {
-        console.error('Error saving state:', e);
-      }
+    function getAllowedCigs(day) {
+      if (state.config.quitMode === 'immediate') return 0;
+      if (day >= 8) return 0;
+      const step = state.config.baseCigs / 8;
+      return Math.max(0, Math.round(state.config.baseCigs - step * day));
     }
 
-    function setupDynamicPwaManifest() {
-      try {
-        const svgIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><rect width="192" height="192" rx="44" fill="#0f172a"/><circle cx="96" cy="96" r="68" fill="#0d9488"/><text x="96" y="114" font-size="74" text-anchor="middle" fill="#ffffff">🚀</text></svg>`;
-        const iconDataUri = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgIcon);
-        document.getElementById('appleTouchIconLink').href = iconDataUri;
+    function getStagesForDay(day) {
+      const allowed = getAllowedCigs(day);
+      const ex = state.config.exercises;
+      const exSteps = [
+        { id: 'ex_pushups', title: `${ex.pushups.name}: ${ex.pushups.count} ${ex.pushups.unit}`, exKey: 'pushups' },
+        { id: 'ex_squats', title: `${ex.squats.name}: ${ex.squats.count} ${ex.squats.unit}`, exKey: 'squats' },
+        { id: 'ex_plank', title: `${ex.plank.name}: ${ex.plank.count} ${ex.plank.unit}`, exKey: 'plank', hasTimer: true },
+        { id: 'ex_abs', title: `${ex.abs.name}: ${ex.abs.count} ${ex.abs.unit}`, exKey: 'abs' },
+        { id: 'ex_walk', title: `${ex.walk.name}: ${ex.walk.count} ${ex.walk.unit}`, exKey: 'walk' }
+      ];
+      if (state.config.customExName && state.config.customExName.trim()) {
+        exSteps.push({
+          id: 'ex_custom',
+          title: `${state.config.customExName}: ${state.config.customExCount || 'مكتمل'}`
+        });
+      }
 
-        const manifestObj = {
-          name: 'منصة التحوّل الشامل — تبطيل وتعلّم (90 يوماً)',
-          short_name: 'التحوّل 90',
-          description: 'منصتك التفاعلية المتكاملة للإقلاع عن العادات السلبية وبناء عادات التعلّم والنوم والصلاة.',
-          start_url: '.',
-          display: 'standalone',
-          dir: 'rtl',
-          lang: 'ar',
-          background_color: '#0f172a',
-          theme_color: '#0d9488',
-          icons: [
-            { src: iconDataUri, sizes: '192x192', type: 'image/svg+xml' },
-            { src: iconDataUri, sizes: '512x512', type: 'image/svg+xml' }
+      const eng = englishBank[(day - 1) % englishBank.length];
+      const hifz = hifzBank[(day - 1) % hifzBank.length];
+
+      return [
+        {
+          id: 'smoking',
+          icon: '🚭',
+          title: 'المرحلة 1: السجائر والتنفس النقي',
+          color: 'amber',
+          isSmoking: true,
+          steps: [
+            { id: 'cig_limit', title: allowed === 0 ? 'الالتزام بصفر سجائر طوال اليوم (0 سيجارة)' : `عدم تجاوز الحد المسموح اليوم (${allowed} سيجارة كحد أقصى)` },
+            { id: 'cig_craving', title: 'تجاوز رغبات التدخين بالماء أو التنفس العميق دون استسلام' }
           ]
-        };
-        const blob = new Blob([JSON.stringify(manifestObj)], { type: 'application/manifest+json' });
-        const manifestUrl = URL.createObjectURL(blob);
-        document.getElementById('dynamicManifestLink').href = manifestUrl;
-      } catch (e) {
-        // Safe fallback if Blob URL blocked in sandbox
+        },
+        {
+          id: 'prayer',
+          icon: '🕌',
+          title: 'المرحلة 2: الصلوات الخمس والوتر والأذكار',
+          color: 'emerald',
+          steps: [
+            { id: 'pr_fajr', title: 'صلاة الفجر في وقتها' },
+            { id: 'pr_dhuhr', title: 'صلاة الظهر' },
+            { id: 'pr_asr', title: 'صلاة العصر' },
+            { id: 'pr_maghrib', title: 'صلاة المغرب' },
+            { id: 'pr_isha', title: 'صلاة العشاء' },
+            { id: 'pr_witr', title: 'صلاة الشفع والوتر قبل النوم' },
+            { id: 'pr_azkar', title: 'أذكار الصباح والمساء وورد القرآن' }
+          ]
+        },
+        {
+          id: 'recovery',
+          icon: '🛡️',
+          title: 'المرحلة 3: التعافي والانضباط والانوم',
+          color: 'purple',
+          steps: [
+            { id: 'rec_clean', title: 'يوم نظيف 100% (غض البصر والابتعاد التام عن المثيرات)' },
+            { id: 'rec_sleep', title: 'ترك الموبايل قبل النوم بـ 30 دقيقة والالتزام بموعد النوم' }
+          ]
+        },
+        {
+          id: 'exercise',
+          icon: '💪',
+          title: 'المرحلة 4: التمارين البدنية (قابلة للتعديل)',
+          color: 'sky',
+          steps: exSteps
+        },
+        {
+          id: 'brain',
+          icon: '🧠',
+          title: 'المرحلة 5: الإنجليزي، الحفظ، وتحدي الشطرنج',
+          color: 'teal',
+          isBrain: true,
+          steps: [
+            { id: 'br_english', title: `عبارة اليوم: "${eng.en}" — (${eng.ar})`, speakText: eng.en },
+            { id: 'br_hifz', title: `حفظ اليوم: ${hifz}` },
+            { id: 'br_chess', title: 'حل لغز وتكتيك الشطرنج اليومي' }
+          ]
+        }
+      ];
+    }
+
+    function calcDayPoints(day) {
+      const dObj = getDayObj(day);
+      let pts = 0;
+      Object.values(dObj.status).forEach(v => { if (v === 'done') pts += 10; });
+      if (dObj.chessSolved) pts += 15;
+      return pts;
+    }
+
+    function calcSavings() {
+      let totalSavedCigs = 0;
+      for (let d = 1; d <= state.currentDay; d++) {
+        const dObj = getDayObj(d);
+        if (d < state.currentDay || dObj.completed || Object.keys(dObj.status).length > 0 || dObj.cigsSmoked > 0) {
+          const saved = Math.max(0, state.config.baseCigs - (dObj.cigsSmoked || 0));
+          totalSavedCigs += saved;
+        }
       }
+      const pricePerCig = state.config.packPrice / 20;
+      const savedMoney = Math.round(totalSavedCigs * pricePerCig);
+      return { totalSavedCigs, savedMoney };
     }
 
-    function getDayRecord(dayNum) {
-      if (!state.days[dayNum]) {
-        state.days[dayNum] = {
-          completedTracks: {},
-          smokedCount: 0,
-          recoveryShield: false,
-          sleepSteps: [false, false, false, false],
-          sleepHours: 7,
-          sleepQuality: 'عميق ومريح',
-          prayers: { fajr: false, dhuhr: false, asr: false, maghrib: false, isha: false, witr: false, quran: false },
-          extraSavedEgp: 0,
-          wheelDoneCount: 0,
-          mood: '',
-          note: ''
-        };
-      }
-      if (!state.days[dayNum].completedTracks) state.days[dayNum].completedTracks = {};
-      return state.days[dayNum];
-    }
+    function renderApp() {
+      const day = state.currentDay;
+      const dObj = getDayObj(day);
+      const stages = getStagesForDay(day);
 
-    function getAllTracks() {
-      return [...BUILTIN_TRACKS, ...(state.customTracks || [])];
-    }
+      document.getElementById('hdrDay').textContent = day;
+      const livePoints = state.totalPoints + (dObj.completed ? 0 : calcDayPoints(day));
+      document.getElementById('hdrPoints').textContent = livePoints;
 
-    // Determine which tracks are visible/focused today based on Execution Mode
-    function getEffectiveActiveTracksForDay(dayNum) {
-      const all = getAllTracks();
-      const enabled = all.filter(t => state.enabledTracks.includes(t.id));
+      let totalSteps = 0, doneSteps = 0;
+      stages.forEach(st => st.steps.forEach(s => {
+        totalSteps++;
+        if (dObj.status[s.id] === 'done') doneSteps++;
+      }));
+      const pct = totalSteps ? Math.round((doneSteps / totalSteps) * 100) : 0;
+      document.getElementById('hdrTodayPct').textContent = pct;
 
-      if (state.executionMode === 'progressive') {
-        // Days 1-14: focus on top 2 keystone tracks; Days 15-30: top 4; Days 31+: all enabled
-        const limit = dayNum <= 14 ? 2 : dayNum <= 30 ? 4 : enabled.length;
-        const sorted = [...enabled].sort((a, b) => (a.keystoneOrder || 99) - (b.keystoneOrder || 99));
-        return sorted.slice(0, Math.max(1, limit));
-      }
-      return enabled;
-    }
+      const nextDay = day < 90 ? day + 1 : 'FINISH';
+      document.getElementById('finishDayBtnText').textContent = day < 90
+        ? `انتهى اليوم ${day} — جمّع النقط وانتقل لليوم ${nextDay}`
+        : `🏁 إنهاء اليوم 90 وإصدار شهادة التخرج!`;
 
-    function getDailyCigaretteAllowance(dayNum) {
-      const base = Math.max(1, Number(state.settings.cigsPerDay) || 20);
-      if (state.settings.quitStrategy === 'cold_turkey') return 0;
-      if (dayNum >= 8) return 0;
-      const ratios = [0.75, 0.60, 0.50, 0.35, 0.25, 0.15, 0.05];
-      return Math.max(1, Math.round(base * ratios[dayNum - 1]));
-    }
+      const container = document.getElementById('stagesContainer');
+      container.innerHTML = '';
 
-    function evaluateDayCompletion(dayNum) {
-      const rec = getDayRecord(dayNum);
-      const tracks = getEffectiveActiveTracksForDay(dayNum);
-      if (tracks.length === 0) return { doneCount: 0, totalCount: 0, pct: 0, isPerfect: false };
+      const allowedCigs = getAllowedCigs(day);
+      const savings = calcSavings();
+      const chess = chessBank[(day - 1) % chessBank.length];
 
-      let doneCount = 0;
-      tracks.forEach(t => {
-        if (rec.completedTracks[t.id]) doneCount++;
+      stages.forEach(stage => {
+        const card = document.createElement('div');
+        card.className = 'stage-card bg-slate-900/90 border border-slate-800 rounded-2xl p-4 space-y-3';
+
+        let extraHeader = '';
+        if (stage.isSmoking) {
+          extraHeader = `
+            <div class="bg-slate-950 border border-amber-500/30 rounded-xl p-3 space-y-2">
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-slate-300">المسموح اليوم: <strong class="text-amber-400">${allowedCigs} سيجارة</strong></span>
+                <span class="text-emerald-400 font-bold">وفّرت: ${savings.savedMoney} ج.م (${savings.totalSavedCigs} سيجارة)</span>
+              </div>
+              <div class="flex items-center justify-between bg-slate-900 px-3 py-2 rounded-lg border border-slate-800">
+                <span class="text-xs text-slate-300">شربت النهاردة: <strong class="text-base text-white">${dObj.cigsSmoked || 0}</strong></span>
+                <div class="flex items-center gap-2">
+                  <button onclick="changeCigs(-1)" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-black text-base">-</button>
+                  <button onclick="changeCigs(1)" class="px-3 h-8 rounded-lg bg-rose-600/80 hover:bg-rose-600 text-white font-bold text-xs">+1 سيجارة</button>
+                </div>
+              </div>
+            </div>
+          `;
+        }
+
+        let stepsHTML = '';
+        stage.steps.forEach(step => {
+          const stVal = dObj.status[step.id];
+          const noteVal = dObj.notes[step.id] || '';
+          const statusClass = stVal === 'done' ? 'step-done' : (stVal === 'fail' ? 'step-fail' : 'bg-slate-950/60 border-slate-800');
+
+          let stepExtras = '';
+          if (step.exKey) {
+            stepExtras += `
+              <div class="flex items-center gap-1.5 mt-1.5">
+                <span class="text-[10px] text-slate-400">تعديل العدد:</span>
+                <button onclick="adjustEx('${step.exKey}', -5)" class="px-2 py-0.5 bg-slate-800 rounded text-xs font-bold text-slate-200">-5</button>
+                <button onclick="adjustEx('${step.exKey}', 5)" class="px-2 py-0.5 bg-slate-800 rounded text-xs font-bold text-emerald-300">+5</button>
+              </div>
+            `;
+          }
+          if (step.hasTimer) {
+            stepExtras += `
+              <div class="flex items-center gap-2 mt-2 bg-slate-900/90 px-2.5 py-1.5 rounded-lg border border-slate-800">
+                <span class="text-xs font-mono font-bold text-sky-400" id="plankTimerDisplay">${plankRemaining} ث</span>
+                <button onclick="togglePlankTimer()" class="text-[11px] bg-sky-600 text-white px-2.5 py-0.5 rounded font-bold">⏱️ ابدأ / إيقاف</button>
+                <button onclick="resetPlankTimer()" class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">إعادة</button>
+              </div>
+            `;
+          }
+          if (step.speakText) {
+            stepExtras += `
+              <button onclick="speakEnglish('${step.speakText.replace(/'/g, "\\'")}')" class="mt-1.5 inline-flex items-center gap-1 bg-teal-600/20 text-teal-300 border border-teal-500/30 px-2.5 py-1 rounded-lg text-[11px] font-bold">
+                <span>🔊</span><span>استمع للنطق الصحيح</span>
+              </button>
+            `;
+          }
+          if (step.id === 'br_chess') {
+            stepExtras += `
+              <div class="mt-2 bg-slate-900 border border-slate-800 rounded-xl p-2.5 space-y-2">
+                <div class="text-[11px] font-bold text-amber-300">♟️ ${chess.q}</div>
+                <div class="space-y-1.5">
+                  ${chess.opts.map((opt, idx) => `
+                    <button onclick="answerChess(${idx}, ${chess.ans})" class="w-full text-right text-[11px] px-2.5 py-1.5 rounded-lg border ${dObj.chessSolved && idx === chess.ans ? 'bg-emerald-600/30 border-emerald-500 text-emerald-200 font-bold' : 'bg-slate-950 border-slate-800 text-slate-300 hover:border-slate-600'}">
+                      ${idx + 1}. ${opt}
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
+            `;
+          }
+
+          stepsHTML += `
+            <div class="border rounded-xl p-3 transition ${statusClass}">
+              <div class="flex items-start justify-between gap-2">
+                <div class="flex-1">
+                  <div class="text-xs font-bold text-slate-100 leading-relaxed">${step.title}</div>
+                  ${stepExtras}
+                </div>
+                <div class="flex items-center gap-1.5 shrink-0">
+                  <button onclick="setStepStatus('${step.id}', 'done')" class="w-9 h-9 rounded-xl font-black text-sm flex items-center justify-center border transition ${stVal === 'done' ? 'bg-emerald-500 text-slate-950 border-emerald-300 shadow-md shadow-emerald-950' : 'bg-slate-800 text-emerald-400 border-slate-700 hover:bg-slate-700'}">✓</button>
+                  <button onclick="setStepStatus('${step.id}', 'fail')" class="w-9 h-9 rounded-xl font-black text-sm flex items-center justify-center border transition ${stVal === 'fail' ? 'bg-rose-500 text-white border-rose-300 shadow-md shadow-rose-950' : 'bg-slate-800 text-rose-400 border-slate-700 hover:bg-slate-700'}">✕</button>
+                </div>
+              </div>
+              <input type="text" value="${noteVal.replace(/"/g, '&quot;')}" onchange="setStepNote('${step.id}', this.value)" placeholder="أضف ملاحظة سريعة (اختياري)..." class="mt-2 w-full bg-slate-950/70 border border-slate-800/80 rounded-lg px-2.5 py-1.5 text-[11px] text-slate-300 placeholder-slate-500 focus:outline-none focus:border-slate-600">
+            </div>
+          `;
+        });
+
+        card.innerHTML = `
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="text-lg">${stage.icon}</span>
+              <h2 class="text-xs sm:text-sm font-black text-white">${stage.title}</h2>
+            </div>
+            <button onclick="markStageAllDone('${stage.id}')" class="text-[11px] bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 px-2.5 py-1 rounded-lg font-bold shrink-0">✓ الكل صح</button>
+          </div>
+          ${extraHeader}
+          <div class="space-y-2.5">${stepsHTML}</div>
+        `;
+        container.appendChild(card);
       });
-      const pct = Math.round((doneCount / tracks.length) * 100);
-      return {
-        doneCount,
-        totalCount: tracks.length,
-        pct,
-        isPerfect: tracks.length > 0 && doneCount === tracks.length
-      };
     }
 
-    function computeGlobalMetrics() {
-      let totalXp = state.bonusXp || 0;
-      let totalCigsAvoided = 0;
-      let totalExtraSavedEgp = 0;
-      let zeroNicotineDays = 0;
-      let cleanRecoveryDays = 0;
-      let fajrDays = 0;
-      let goodSleepDays = 0;
-      let englishDays = 0;
-      let workoutDays = 0;
-      let wheelTotal = 0;
-      let activeDaysCount = 0;
+    function setStepStatus(stepId, val) {
+      const dObj = getDayObj(state.currentDay);
+      dObj.status[stepId] = dObj.status[stepId] === val ? undefined : val;
+      if (!dObj.status[stepId]) delete dObj.status[stepId];
+      persistState();
+      renderApp();
+    }
 
-      let currentStreak = 0;
-      let bestStreak = 0;
-      let runStreak = 0;
-      let latestActiveDay = 0;
+    function setStepNote(stepId, text) {
+      const dObj = getDayObj(state.currentDay);
+      dObj.notes[stepId] = text;
+      persistState();
+    }
 
-      const baseCigs = Math.max(1, Number(state.settings.cigsPerDay) || 20);
-      const pricePerCig = (Number(state.settings.packPrice) || 75) / 20;
+    function markStageAllDone(stageId) {
+      const stages = getStagesForDay(state.currentDay);
+      const st = stages.find(s => s.id === stageId);
+      if (!st) return;
+      const dObj = getDayObj(state.currentDay);
+      st.steps.forEach(s => { dObj.status[s.id] = 'done'; });
+      persistState();
+      renderApp();
+    }
 
+    function changeCigs(delta) {
+      const dObj = getDayObj(state.currentDay);
+      dObj.cigsSmoked = Math.max(0, (dObj.cigsSmoked || 0) + delta);
+      const allowed = getAllowedCigs(state.currentDay);
+      if (dObj.cigsSmoked > allowed) {
+        dObj.status['cig_limit'] = 'fail';
+      }
+      persistState();
+      renderApp();
+    }
+
+    function adjustEx(exKey, delta) {
+      if (!state.config.exercises[exKey]) return;
+      state.config.exercises[exKey].count = Math.max(1, state.config.exercises[exKey].count + delta);
+      if (exKey === 'plank') {
+        plankRemaining = state.config.exercises.plank.count;
+      }
+      persistState();
+      renderApp();
+    }
+
+    function togglePlankTimer() {
+      if (plankInterval) {
+        clearInterval(plankInterval);
+        plankInterval = null;
+        return;
+      }
+      plankInterval = setInterval(() => {
+        plankRemaining--;
+        const el = document.getElementById('plankTimerDisplay');
+        if (el) el.textContent = plankRemaining + ' ث';
+        if (plankRemaining <= 0) {
+          clearInterval(plankInterval);
+          plankInterval = null;
+          plankRemaining = state.config.exercises.plank.count;
+          setStepStatus('ex_plank', 'done');
+        }
+      }, 1000);
+    }
+
+    function resetPlankTimer() {
+      if (plankInterval) { clearInterval(plankInterval); plankInterval = null; }
+      plankRemaining = state.config.exercises.plank.count;
+      const el = document.getElementById('plankTimerDisplay');
+      if (el) el.textContent = plankRemaining + ' ث';
+    }
+
+    function speakEnglish(text) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'en-US';
+        u.rate = 0.9;
+        window.speechSynthesis.speak(u);
+      }
+    }
+
+    function answerChess(chosen, correct) {
+      const dObj = getDayObj(state.currentDay);
+      if (chosen === correct) {
+        dObj.chessSolved = true;
+        dObj.status['br_chess'] = 'done';
+        persistState();
+        renderApp();
+      } else {
+        alert('حاول مرة أخرى! ركّز في تهديد الملك أو القطع غير المحمية.');
+      }
+    }
+
+    function finishCurrentDay() {
+      const day = state.currentDay;
+      const dObj = getDayObj(day);
+      const stages = getStagesForDay(day);
+
+      stages.forEach(st => {
+        st.steps.forEach(s => {
+          if (!dObj.status[s.id]) {
+            dObj.status[s.id] = 'fail';
+          }
+        });
+      });
+
+      const earned = calcDayPoints(day);
+      dObj.pointsEarned = earned;
+      dObj.completed = true;
+      state.totalPoints += earned;
+
+      if (day < 90) {
+        state.currentDay = day + 1;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        persistState();
+        renderApp();
+      } else {
+        persistState();
+        renderApp();
+        showFinishModal();
+      }
+    }
+
+    function switchTab(tab) {
+      const dailyView = document.getElementById('dailyView');
+      const logView = document.getElementById('logView');
+      const b1 = document.getElementById('tabDailyBtn');
+      const b2 = document.getElementById('tabLogBtn');
+
+      if (tab === 'daily') {
+        dailyView.classList.remove('hidden');
+        logView.classList.add('hidden');
+        b1.className = 'py-1.5 rounded-lg text-xs font-bold bg-emerald-600 text-white transition';
+        b2.className = 'py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition';
+      } else {
+        dailyView.classList.add('hidden');
+        logView.classList.remove('hidden');
+        b2.className = 'py-1.5 rounded-lg text-xs font-bold bg-emerald-600 text-white transition';
+        b1.className = 'py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition';
+        renderLogGrid();
+      }
+    }
+
+    function renderLogGrid() {
+      const grid = document.getElementById('daysGrid');
+      grid.innerHTML = '';
       for (let d = 1; d <= 90; d++) {
-        const rec = state.days[d];
-        if (!rec) {
-          runStreak = 0;
-          continue;
-        }
-        const ev = evaluateDayCompletion(d);
-        if (ev.doneCount > 0 || (rec.wheelDoneCount || 0) > 0) {
-          activeDaysCount++;
-          runStreak++;
-          if (runStreak > bestStreak) bestStreak = runStreak;
-          latestActiveDay = d;
-        } else {
-          runStreak = 0;
-        }
+        const dObj = state.daysData[d];
+        let cls = 'bg-slate-800/60 border-slate-700 text-slate-400';
+        if (d === state.currentDay) cls = 'bg-amber-500/20 border-amber-400 text-amber-300 font-black';
+        else if (dObj && dObj.completed) cls = 'bg-emerald-600/25 border-emerald-500 text-emerald-300 font-bold';
 
-        totalXp += ev.doneCount * 25;
-        if (ev.isPerfect) totalXp += 100;
-        totalXp += (rec.wheelDoneCount || 0) * 25;
-        wheelTotal += (rec.wheelDoneCount || 0);
-
-        if (rec.completedTracks && rec.completedTracks.smoking) {
-          const allowed = getDailyCigaretteAllowance(d);
-          const actual = Math.min(allowed, rec.smokedCount || 0);
-          totalCigsAvoided += Math.max(0, baseCigs - actual);
-          if (allowed === 0 && actual === 0) zeroNicotineDays++;
-        }
-
-        if (rec.completedTracks && rec.completedTracks.recovery) cleanRecoveryDays++;
-        if (rec.prayers && rec.prayers.fajr) fajrDays++;
-        if (rec.completedTracks && rec.completedTracks.sleep) goodSleepDays++;
-        if (rec.completedTracks && rec.completedTracks.english) englishDays++;
-        if (rec.completedTracks && rec.completedTracks.workout) workoutDays++;
-        totalExtraSavedEgp += Number(rec.extraSavedEgp) || 0;
+        const btn = document.createElement('button');
+        btn.className = `py-2 rounded-xl border text-xs ${cls}`;
+        btn.textContent = d;
+        btn.onclick = () => showDayDetails(d);
+        grid.appendChild(btn);
       }
-
-      for (let d = latestActiveDay; d >= 1; d--) {
-        const ev = evaluateDayCompletion(d);
-        const rec = state.days[d];
-        if (ev.doneCount > 0 || (rec && (rec.wheelDoneCount || 0) > 0)) currentStreak++;
-        else break;
-      }
-
-      state.bestRecoveryStreak = Math.max(state.bestRecoveryStreak || 0, bestStreak);
-      const cigSavingsEgp = Math.round(totalCigsAvoided * pricePerCig);
-      const totalSavedEgp = cigSavingsEgp + totalExtraSavedEgp;
-
-      return {
-        totalXp,
-        totalCigsAvoided,
-        cigSavingsEgp,
-        totalExtraSavedEgp,
-        totalSavedEgp,
-        zeroNicotineDays,
-        cleanRecoveryDays,
-        fajrDays,
-        goodSleepDays,
-        englishDays,
-        workoutDays,
-        wheelTotal,
-        activeDaysCount,
-        currentStreak,
-        bestStreak: state.bestRecoveryStreak
-      };
     }
 
-    function getRankInfo(xp) {
-      let current = RANKS[0];
-      for (const r of RANKS) {
-        if (xp >= r.minXp) current = r;
+    function showDayDetails(d) {
+      const box = document.getElementById('dayDetailBox');
+      const dObj = state.daysData[d];
+      box.classList.remove('hidden');
+      if (!dObj) {
+        box.innerHTML = `<div class="text-xs text-slate-400">اليوم ${d}: لم يبدأ بعد.</div>`;
+        return;
       }
-      return current;
+      const notesEntries = Object.entries(dObj.notes || {}).filter(([_, v]) => v && v.trim());
+      box.innerHTML = `
+        <div class="flex items-center justify-between">
+          <span class="text-sm font-black text-emerald-400">تفاصيل اليوم ${d}</span>
+          <span class="text-xs font-bold text-amber-400">${dObj.pointsEarned || calcDayPoints(d)} XP</span>
+        </div>
+        <div class="text-xs text-slate-300">السجائر المسجلة: <strong>${dObj.cigsSmoked || 0}</strong></div>
+        ${notesEntries.length ? `<div class="text-xs text-slate-300 pt-1 border-t border-slate-800"><strong>ملاحظاتك:</strong><ul class="list-disc pr-4 mt-1 space-y-1">${notesEntries.map(([_, val]) => `<li>${val}</li>`).join('')}</ul></div>` : '<div class="text-[11px] text-slate-500">لا توجد ملاحظات مكتوبة لهذا اليوم.</div>'}
+      `;
     }
 
-    // =========================================================
-    // WEB AUDIO API SOUND EFFECTS & CANVAS CONFETTI
-    // =========================================================
+    function openSettings() {
+      document.getElementById('cfgBaseCigs').value = state.config.baseCigs;
+      document.getElementById('cfgPackPrice').value = state.config.packPrice;
+      document.getElementById('cfgQuitMode').value = state.config.quitMode;
+      document.getElementById('cfgCustomExName').value = state.config.customExName || '';
+      document.getElementById('cfgCustomExCount').value = state.config.customExCount || '';
+      document.getElementById('cfgManualDay').value = state.currentDay;
+      document.getElementById('cfgManualPoints').value = state.totalPoints;
 
-    function playTone(freq = 523.25, duration = 0.22, type = 'sine') {
-      if (!state.soundEnabled) return;
+      const list = document.getElementById('exConfigList');
+      list.innerHTML = Object.entries(state.config.exercises).map(([key, item]) => `
+        <div class="flex items-center justify-between bg-slate-900 px-2.5 py-1.5 rounded-lg border border-slate-800">
+          <span class="text-[11px] text-slate-200 font-bold">${item.name}</span>
+          <div class="flex items-center gap-1.5">
+            <input id="exInput_${key}" type="number" min="1" value="${item.count}" class="w-16 bg-slate-950 border border-slate-700 rounded px-2 py-1 text-xs text-center text-white font-bold">
+            <span class="text-[10px] text-slate-400">${item.unit}</span>
+          </div>
+        </div>
+      `).join('');
+
+      document.getElementById('settingsModal').classList.remove('hidden');
+      document.getElementById('settingsModal').classList.add('flex');
+    }
+
+    function closeSettings() {
+      document.getElementById('settingsModal').classList.add('hidden');
+      document.getElementById('settingsModal').classList.remove('flex');
+    }
+
+    function saveSettings() {
+      state.config.baseCigs = Math.max(1, parseInt(document.getElementById('cfgBaseCigs').value) || 20);
+      state.config.packPrice = Math.max(1, parseInt(document.getElementById('cfgPackPrice').value) || 65);
+      state.config.quitMode = document.getElementById('cfgQuitMode').value;
+      state.config.customExName = document.getElementById('cfgCustomExName').value;
+      state.config.customExCount = document.getElementById('cfgCustomExCount').value;
+
+      Object.keys(state.config.exercises).forEach(key => {
+        const inp = document.getElementById(`exInput_${key}`);
+        if (inp) state.config.exercises[key].count = Math.max(1, parseInt(inp.value) || 10);
+      });
+      plankRemaining = state.config.exercises.plank.count;
+
+      const mDay = parseInt(document.getElementById('cfgManualDay').value);
+      if (mDay >= 1 && mDay <= 90) state.currentDay = mDay;
+      const mPts = parseInt(document.getElementById('cfgManualPoints').value);
+      if (!isNaN(mPts) && mPts >= 0) state.totalPoints = mPts;
+
+      persistState();
+      closeSettings();
+      renderApp();
+    }
+
+    function copyBackupCode() {
+      const code = btoa(unescape(encodeURIComponent(JSON.stringify(state))));
+      navigator.clipboard.writeText(code).then(() => {
+        alert('✅ تم نسخ كود التقدم! احتفظ به في أي ملاحظة لاسترجاع أيامك ونقاطك في أي وقت.');
+      }).catch(() => {
+        prompt('انسخ الكود التالي يدوياً:', code);
+      });
+    }
+
+    function pasteBackupCode() {
+      const code = prompt('الصق كود التقدم المحفوظ هنا:');
+      if (!code) return;
       try {
-        const AudioCtx = window.AudioContext || window.webkitAudioContext;
-        if (!AudioCtx) return;
-        const ctx = new AudioCtx();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = type;
-        osc.frequency.setValueAtTime(freq, ctx.currentTime);
-        gain.gain.setValueAtTime(0.06, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start();
-        osc.stop(ctx.currentTime + duration);
+        const parsed = JSON.parse(decodeURIComponent(escape(atob(code.trim()))));
+        if (parsed && parsed.currentDay) {
+          state = parsed;
+          persistState();
+          closeSettings();
+          renderApp();
+          alert('✅ تم استرجاع أيامك ونقاطك بنجاح!');
+        }
+      } catch (e) {
+        alert('❌ الكود غير صحيح، تأكد من نسخه بالكامل.');
+      }
+    }
+
+    function openSOS() {
+      document.getElementById('sosModal').classList.remove('hidden');
+      document.getElementById('sosModal').classList.add('flex');
+      resetSOSTimer();
+    }
+
+    function closeSOS() {
+      if (sosInterval) clearInterval(sosInterval);
+      document.getElementById('sosModal').classList.add('hidden');
+      document.getElementById('sosModal').classList.remove('flex');
+    }
+
+    function resetSOSTimer() {
+      if (sosInterval) clearInterval(sosInterval);
+      sosSeconds = 300;
+      const phases = [
+        "شهيق عميق من الأنف (4 ثوانٍ)...",
+        "احبس النفس بهدوء (7 ثوانٍ)...",
+        "زفير بطيء من الفم (8 ثوانٍ)..."
+      ];
+      let pIdx = 0;
+      sosInterval = setInterval(() => {
+        sosSeconds--;
+        const m = String(Math.floor(sosSeconds / 60)).padStart(2, '0');
+        const s = String(sosSeconds % 60).padStart(2, '0');
+        document.getElementById('sosTimer').textContent = `${m}:${s}`;
+        if (sosSeconds % 6 === 0) {
+          pIdx = (pIdx + 1) % phases.length;
+          document.getElementById('breathText').textContent = phases[pIdx];
+        }
+        if (sosSeconds <= 0) {
+          clearInterval(sosInterval);
+          document.getElementById('breathText').textContent = "🎉 بطل! لقد كسرت موجة الرغبة بنجاح!";
+        }
+      }, 1000);
+    }
+
+    function showFinishModal() {
+      const savings = calcSavings();
+      const completedCount = Object.values(state.daysData).filter(d => d.completed).length;
+      document.getElementById('finPoints').textContent = `${state.totalPoints} XP`;
+      document.getElementById('finMoney').textContent = `${savings.savedMoney} ج.م`;
+      document.getElementById('finCigs').textContent = savings.totalSavedCigs;
+      document.getElementById('finDays').textContent = `${completedCount} / 90`;
+      document.getElementById('finishModal').classList.remove('hidden');
+      document.getElementById('finishModal').classList.add('flex');
+    }
+
+    function closeFinishModal() {
+      document.getElementById('finishModal').classList.add('hidden');
+      document.getElementById('finishModal').classList.remove('flex');
+    }
+
+    // Dual Persistence: localStorage + IndexedDB
+    function persistState() {
+      try {
+        localStorage.setItem(LS_KEY, JSON.stringify(state));
+      } catch (e) {}
+      try {
+        const req = indexedDB.open(DB_NAME, 1);
+        req.onupgradeneeded = e => {
+          e.target.result.createObjectStore(STORE_NAME);
+        };
+        req.onsuccess = e => {
+          const db = e.target.result;
+          const tx = db.transaction(STORE_NAME, 'readwrite');
+          tx.objectStore(STORE_NAME).put(state, 'main');
+        };
       } catch (e) {}
     }
 
-    function playFanfare() {
-      if (!state.soundEnabled) return;
-      playTone(523.25, 0.16);
-      setTimeout(() => playTone(659.25, 0.16), 120);
-      setTimeout(() => playTone(783.99, 0.32), 240);
-    }
-
-    function triggerConfettiCelebration() {
-      const canvas = document.getElementById('confettiCanvas');
-      if (!canvas) return;
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      const ctx = canvas.getContext('2d');
-
-      const colors = ['#0d9488', '#10b981', '#f59e0b', '#f43f5e', '#38bdf8'];
-      const particles = Array.from({ length: 85 }, () => ({
-        x: Math.random() * canvas.width,
-        y: -20 - Math.random() * 120,
-        size: 6 + Math.random() * 6,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        vx: (Math.random() - 0.5) * 4,
-        vy: 3 + Math.random() * 4.5,
-        rot: Math.random() * 360,
-        vRot: (Math.random() - 0.5) * 8
-      }));
-
-      let frame = 0;
-      function animateConfetti() {
-        frame++;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particles.forEach(p => {
-          p.x += p.vx;
-          p.y += p.vy;
-          p.rot += p.vRot;
-          ctx.save();
-          ctx.translate(p.x, p.y);
-          ctx.rotate((p.rot * Math.PI) / 180);
-          ctx.fillStyle = p.color;
-          ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
-          ctx.restore();
-        });
-        if (frame < 135) {
-          requestAnimationFrame(animateConfetti);
-        } else {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
+    function loadState() {
+      let loaded = false;
+      try {
+        const raw = localStorage.getItem(LS_KEY);
+        if (raw) {
+          state = Object.assign({}, defaultState, JSON.parse(raw));
+          loaded = true;
         }
+      } catch (e) {}
+
+      renderApp();
+
+      if (!loaded) {
+        try {
+          const req = indexedDB.open(DB_NAME, 1);
+          req.onupgradeneeded = e => { e.target.result.createObjectStore(STORE_NAME); };
+          req.onsuccess = e => {
+            const db = e.target.result;
+            const tx = db.transaction(STORE_NAME, 'readonly');
+            const getReq = tx.objectStore(STORE_NAME).get('main');
+            getReq.onsuccess = () => {
+              if (getReq.result) {
+                state = Object.assign({}, defaultState, getReq.result);
+                persistState();
+                renderApp();
+              }
+            };
+          };
+        } catch (e) {}
       }
-      animateConfetti();
     }
 
-    function showToast(msg, variant = 'success') {
-      const container = document.getElementById('toastContainer');
-      if (!container) return;
-      const div = document.createElement('div');
-      const styles = {
-        success: 'bg-slateDeep text-white border-tealPrimary',
-        xp: 'bg-gradient-to-l from-slateDeep to-teal-950 text-amber-200 border-goldXp',
-        info: 'bg-white text-slateDeep border-slate-300'
-      };
-      div.className = `toast-enter pointer-events-auto px-4 py-3 rounded-2xl border-2 shadow-xl text-xs sm:text-sm font-bold flex items-center gap-2.5 ${styles[variant] || styles.success}`;
-      div.innerHTML = `<span>${variant === 'xp' ? '⭐' : '✨'}</span><span>${msg}</span>`;
-      container.appendChild(div);
-      setTimeout(() => {
-        div.style.opacity = '0';
-        div.style.transform = 'translateY(-8px)';
-        div.style.transition = 'all 0.25s ease';
-        setTimeout(() => div.remove(), 260);
-      }, 3300);
-    }
-
-    // =========================================================
-    // RENDER FUNCTIONS
-    // =========================================================
-
-    function renderHeaderAndKpis() {
-      const day = state.selectedDay;
-      const month = day <= 30 ? 1 : day <= 60 ? 2 : 3;
-      const phaseNames = {
-        1: 'الشهر 1: التطهير وبناء الأساس',
-        2: 'الشهر 2: ترسيخ الإيقاع والنمو',
-        3: 'الشهر 3: الاستشفاء الكامل والهوية الجديدة'
-      };
-
-      document.getElementById('headerDayNum').textContent = day;
-      document.getElementById('headerPhaseBadge').textContent = phaseNames[month];
-      document.getElementById('soundIcon').textContent = state.soundEnabled ? '🔊' : '🔇';
-      document.getElementById('soundLabel').textContent = state.soundEnabled ? 'الصوت' : 'صامت';
-
-      const m = computeGlobalMetrics();
-      const rank = getRankInfo(m.totalXp);
-      const rankPct = Math.min(100, Math.round(((m.totalXp - rank.minXp) / Math.max(1, rank.nextXp - rank.minXp)) * 100));
-
-      document.getElementById('headerRankTitle').textContent = rank.title;
-      document.getElementById('headerTotalXp').textContent = m.totalXp;
-      document.getElementById('headerActiveTracksCount').textContent = state.enabledTracks.length;
-      document.getElementById('headerXpBar').style.width = `${rankPct}%`;
-      document.getElementById('headerNextRankText').textContent = `${m.totalXp} / ${rank.nextXp} XP`;
-
-      // 4 Live KPI Cards
-      document.getElementById('kpiCurrentStreak').textContent = m.currentStreak;
-      document.getElementById('kpiBestStreak').textContent = `${m.bestStreak} يوم`;
-
-      const activePct = Math.round((m.activeDaysCount / 90) * 100);
-      document.getElementById('kpiActiveDays').textContent = m.activeDaysCount;
-      document.getElementById('kpiActivePct').textContent = `${activePct}%`;
-      document.getElementById('kpiActiveBar').style.width = `${activePct}%`;
-
-      document.getElementById('kpiTotalSavedEgp').textContent = m.totalSavedEgp;
-      document.getElementById('kpiSavedBreakdown').textContent =
-        `سجائر: ${m.cigSavingsEgp} ج.م (${m.totalCigsAvoided} سيجارة) • ذكي: ${m.totalExtraSavedEgp} ج.م`;
-
-      document.getElementById('kpiRankTitle').textContent = rank.title;
-      document.getElementById('kpiXpVal').textContent = m.totalXp;
-      document.getElementById('kpiRankBar').style.width = `${rankPct}%`;
-
-      document.getElementById('printSummaryLine').textContent =
-        `اليوم الحالي: ${day}/90 | الرتبة: ${rank.title} (${m.totalXp} XP) | إجمالي التوفير: ${m.totalSavedEgp} ج.م (${m.totalCigsAvoided} سيجارة متجنبة) | أيام الإنجاز: ${m.activeDaysCount}/90 | أطول سلسلة: ${m.bestStreak} يوم`;
-    }
-
-    function renderCockpitTab() {
-      const day = state.selectedDay;
-      const rec = getDayRecord(day);
-      const ev = evaluateDayCompletion(day);
-      const metrics = computeGlobalMetrics();
-
-      // Execution Mode Buttons Styling
-      const modeNames = {
-        lite: '⚡ الوضع الخفيف (دقيقتين)',
-        full: '🔥 الوضع المتكامل (البطل)',
-        progressive: '📈 الوضع التدريجي الذكي'
-      };
-      document.getElementById('activeModeBadge').textContent = `الوضع النشط: ${modeNames[state.executionMode]}`;
-
-      ['lite', 'full', 'progressive'].forEach(modeKey => {
-        const btn = document.getElementById(`modeBtn-${modeKey}`);
-        if (!btn) return;
-        if (state.executionMode === modeKey) {
-          btn.className = 'exec-mode-btn text-right p-3.5 rounded-2xl border-2 transition cursor-pointer flex flex-col justify-between space-y-1.5 bg-teal-50/80 border-tealPrimary shadow-sm';
-        } else {
-          btn.className = 'exec-mode-btn text-right p-3.5 rounded-2xl border-2 transition cursor-pointer flex flex-col justify-between space-y-1.5 bg-white border-slate-200 hover:border-tealPrimary/50';
-        }
-      });
-
-      const progBanner = document.getElementById('progressivePhaseBanner');
-      if (state.executionMode === 'progressive') {
-        progBanner.classList.remove('hidden');
-        const phaseMsg = day <= 14
-          ? `📈 المرحلة 1 (أيام 1–14): التركيز على أهم مسارين أساسيين فقط لتجنب الإرهاق وبناء الزخم.`
-          : day <= 30
-            ? `📈 المرحلة 2 (أيام 15–30): ممتاز! أضفنا مسارين إضافيين لتوسيع دائرة التزامك.`
-            : `📈 المرحلة 3 (أيام 31–90): تم فتح جميع مساراتك المفعّلة بالكامل!`;
-        document.getElementById('progressivePhaseText').textContent = phaseMsg;
-      } else {
-        progBanner.classList.add('hidden');
-      }
-
-      // Daily Ring & Summary
-      const circumference = 263.89;
-      const offset = circumference - (ev.pct / 100) * circumference;
-      document.getElementById('dailyProgressRing').style.strokeDashoffset = offset;
-      document.getElementById('dailyCompletionPct').textContent = `${ev.pct}%`;
-      document.getElementById('dailyTracksCountBadge').textContent = `${ev.doneCount} / ${ev.totalCount} مسارات منجزة`;
-      document.getElementById('dailyHeroTitle').textContent = `اليوم ${day}: خريطة تنفيذك اليومية`;
-
-      const todayXp = ev.doneCount * 25 + (ev.isPerfect ? 100 : 0) + (rec.wheelDoneCount || 0) * 25;
-      document.getElementById('dailyXpVal').textContent = todayXp;
-
-      const celebBanner = document.getElementById('perfectDayCelebrationBanner');
-      if (ev.isPerfect) celebBanner.classList.remove('hidden');
-      else celebBanner.classList.add('hidden');
-
-      // Mood & Reflection Note
-      document.getElementById('dailyMoodRow').innerHTML = MOODS.map(m => {
-        const isSel = rec.mood === m.id;
-        return `
-          <button type="button" data-mood="${m.id}"
-                  class="mood-btn py-2 px-1 rounded-xl border text-center transition flex flex-col items-center justify-center gap-0.5 cursor-pointer ${
-                    isSel
-                      ? 'bg-tealPrimary text-white border-tealPrimary shadow-sm scale-105'
-                      : 'bg-white border-slate-200 hover:border-tealPrimary/50 text-slate-600'
-                  }">
-            <span class="text-base">${m.emoji}</span>
-            <span class="text-[10px] font-bold leading-tight">${m.label}</span>
-          </button>
-        `;
-      }).join('');
-
-      document.getElementById('reflectionDayNum').textContent = day;
-      document.getElementById('dailyReflectionInput').value = rec.note || '';
-
-      // Smart Daily Capsule
-      document.getElementById('capsuleDayLabel').textContent = day;
-      document.getElementById('capsuleTacticalTip').textContent = TACTICAL_TIPS[(day - 1) % TACTICAL_TIPS.length];
-      const engCap = ENGLISH_CAPSULES[(day - 1) % ENGLISH_CAPSULES.length];
-      document.getElementById('capsuleEnglishPhrase').textContent = `"${engCap.en}"`;
-      document.getElementById('capsuleEnglishArabic').textContent = engCap.ar;
-      document.getElementById('capsuleRecoveryMilestone').textContent = RECOVERY_MILESTONES[(day - 1) % RECOVERY_MILESTONES.length];
-
-      // Active Tracks Execution Grid
-      const activeTracks = getEffectiveActiveTracksForDay(day);
-      document.getElementById('activeTracksHeaderCount').textContent = activeTracks.length;
-
-      const gridEl = document.getElementById('activeTracksExecutionGrid');
-      if (activeTracks.length === 0) {
-        gridEl.innerHTML = `
-          <div class="col-span-full bg-cardLight border border-slate-200 rounded-3xl p-8 text-center space-y-3">
-            <div class="text-4xl">🗂️</div>
-            <h3 class="text-base font-black text-slateDeep">لا توجد مسارات مفعّلة حالياً</h3>
-            <p class="text-xs text-slate-500">افتح "مكتبة الخطط والمسارات" لتفعيل مسارات التبطيل والتعلّم التي تناسبك.</p>
-          </div>
-        `;
-      } else {
-        gridEl.innerHTML = activeTracks.map(track => buildTrackExecutionCardHtml(track, day, rec, metrics)).join('');
-      }
-
-      // Spin Wheel Result Card
-      const wIdx = state.currentWheelIndex % WHEEL_SEGMENTS.length;
-      const wItem = WHEEL_SEGMENTS[wIdx];
-      document.getElementById('wheelCompletedBadge').textContent = `مهام العجلة اليوم: ${rec.wheelDoneCount || 0}`;
-      document.getElementById('wheelResIcon').textContent = wItem.icon;
-      document.getElementById('wheelResCategory').textContent = wItem.cat;
-      document.getElementById('wheelResTitle').textContent = wItem.title;
-      document.getElementById('wheelResDesc').textContent = wItem.desc;
-      document.getElementById('wheelResXpHint').textContent = `المكافأة: +${wItem.xp} XP عند التنفيذ`;
-      document.getElementById('claimWheelChallengeBtn').textContent = `✅ نفّذت التحدي (+${wItem.xp} XP)`;
-    }
-
-    function buildTrackExecutionCardHtml(track, day, rec, metrics) {
-      const isDone = !!rec.completedTracks[track.id];
-      const isLite = state.executionMode === 'lite';
-      const taskText = isLite ? track.liteDesc : track.fullDesc;
-      const modeTag = isLite
-        ? `<span class="text-[10px] font-black bg-amber-100 text-amber-800 px-2 py-0.5 rounded-md">⚡
+    loadState();
+  </script>
+</body>
+</html>
